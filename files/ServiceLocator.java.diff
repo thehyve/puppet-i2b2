@@ -1,0 +1,17 @@
+--- ./i2b2src/edu.harvard.i2b2.server-common/src/core/edu/harvard/i2b2/common/util/ServiceLocator.java.orig	2014-12-16 09:56:23.623899025 +0000
++++ ./i2b2src/edu.harvard.i2b2.server-common/src/core/edu/harvard/i2b2/common/util/ServiceLocator.java	2014-12-16 10:21:21.657728218 +0000
+@@ -98,6 +98,14 @@
+             Context context = new InitialContext();
+             dataSource = (javax.sql.DataSource) context.lookup(dataSourceName);
+         } catch (Exception ex) {
++            String nameInCompEnv = dataSourceName.replaceAll(
++                    "(?x)(?:java:/)?(?!comp/env)(.+)", "java:/comp/env/$1");
++            if (!nameInCompEnv.equals(dataSourceName)) {
++                try {
++                    dataSource = getAppServerDataSource(nameInCompEnv);
++                    return dataSource;
++                } catch (I2B2Exception ex2) { }
++            }
+             ex.printStackTrace();
+             throw new I2B2Exception("Servicelocator.getDBDataSource", ex);
+         }
