@@ -1,4 +1,8 @@
+require File.expand_path(File.join(File.dirname(__FILE__), '..', '..',
+                                   'puppet_x', 'thehyve', 'i2b2_param_mixin.rb'))
+
 Puppet::Type.newtype(:modified_properties_file) do
+  extend PuppetX::Thehyve::I2b2ParamMixin
 
   @doc = "Makes property value replacements in a Java property file, either
           overwriting the original file or creating a new one. This
@@ -8,23 +12,15 @@ Puppet::Type.newtype(:modified_properties_file) do
           This type will automatically depend on the source file and
           subscribe to it, provided its title is the path."
 
-  def self.new_file_param(name, options = {}, &block)
-    newparam name, options do
-      instance_eval &block
-
-      old_validate = instance_method(:unsafe_validate)
-      validate do |value|
-        unless Puppet::Util.absolute_path?(value)
-          fail Puppet::Error, "File paths must be fully qualified, not '#{value}'"
-        end
-        old_validate.bind(self)[value] unless !old_validate
+  create_param_type 'file_param' do
+    validate do |value|
+      unless Puppet::Util.absolute_path?(value)
+        fail Puppet::Error, "File paths must be fully qualified, not '#{value}'"
       end
+    end
 
-      old_munge = instance_method(:unsafe_munge)
-      munge do |value|
-        r_value = File.join(File.split(File.expand_path(value)))
-        old_munge.bind(self)[r_value] unless !old_munge
-      end
+    munge do |value|
+      File.join(File.split(File.expand_path(value)))
     end
   end
 
@@ -56,18 +52,10 @@ Puppet::Type.newtype(:modified_properties_file) do
     newvalues :true, :false
   end
 
-  newproperty :values do
+  new_string_valued_hash_param(:values, :create_property => true) do
     isrequired
 
     desc 'The properties and their values'
-
-    validate do |value|
-      fail "replacements must be a hash, got '#{value}'" unless value.instance_of?(Hash)
-      value.each_value do |v|
-        fail "replacement values cannot be hashes or arrays, got #{v} (class #{v.class})" if
-            v.instance_of? Hash or v.instance_of? Array
-      end
-    end
 
     munge do |value|
       # normalize to symbol -> string (UTF-8)

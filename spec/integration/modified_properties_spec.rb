@@ -59,7 +59,7 @@ describe Puppet::Type.type(:modified_properties_file) do
     context 'when values contains is not a hash' do
       before { resource_hash[:values] = 'bar' }
       it 'raises error' do
-        expect { type_instance }.to raise_error Puppet::Error, /replacements must be a hash, got 'bar'/
+        expect { type_instance }.to raise_error Puppet::Error, /Parameter values failed.*must be a hash, got 'bar'/
       end
     end
 
@@ -68,7 +68,7 @@ describe Puppet::Type.type(:modified_properties_file) do
       it 'raises error' do
         expect { type_instance }.to raise_error(
                                         Puppet::Error,
-                                        /replacement values cannot be hashes or arrays, got \[1, 2\]/)
+                                        /got \[1, 2\] \(class Array\) for key 'bar'/)
       end
     end
   end # end describe bad parameters
