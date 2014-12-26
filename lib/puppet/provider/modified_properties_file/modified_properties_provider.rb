@@ -1,9 +1,6 @@
 require 'java-properties'
 
 Puppet::Type.type(:modified_properties_file).provide(:modified_properties_provider) do
-  def self.default?
-    true
-  end
 
   def refresh
     original = template_values
