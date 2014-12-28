@@ -14,6 +14,7 @@ else
   gem 'puppet', '3.4.3', :require => false
 end
 
-gem 'java-properties', '~> 0.0.2', :require => false
+gem 'java-properties', '~> 0.0.2',  :require => false
+gem 'pg',              '~> 0.17.1', :require => false
 
 # vim:ft=ruby et ts=2
