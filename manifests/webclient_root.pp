@@ -17,7 +17,7 @@ class i2b2::webclient_root(
     command => "rm -rf '$webclient_dir' && "
   } ~>
   exec { "extract-$webclient_zip":
-    command        => "bsdtar -C '$webclient_dir' \
+    command     => "bsdtar -C '$webclient_dir' \
                    --strip-components=1 -xf '$webclient_zip'",
     refreshonly => true,
   }
