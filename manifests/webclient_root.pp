@@ -3,7 +3,7 @@ class i2b2::webclient_root(
 ) inherits i2b2::params {
   require i2b2
 
-  $webclient_zip = "$intermediary_files_dir/i2b2webclient-$version.zip"
+  $webclient_zip = "$intermediate_dir/i2b2webclient-$version.zip"
 
   Exec {
     path => '/bin:/usr/bin',
@@ -21,6 +21,4 @@ class i2b2::webclient_root(
                    --strip-components=1 -xf '$webclient_zip'",
     refreshonly => true,
   }
-
-
 }

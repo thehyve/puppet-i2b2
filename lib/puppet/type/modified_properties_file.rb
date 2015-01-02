@@ -71,7 +71,7 @@ Puppet::Type.newtype(:modified_properties_file) do
     end
 
     def set(value)
-      provider.refresh
+      @resource.refresh
     end
 
     def insync?(is)
@@ -97,7 +97,7 @@ Puppet::Type.newtype(:modified_properties_file) do
     self[:source] || self[:target]
   end
 
-  validate do
+  def deferred_validation
     # global validation
     unless self[:source] or File.file?(self[:target])
       fail "File '#{self[:target]}' must exist and be a file unless source is specified"
@@ -106,6 +106,7 @@ Puppet::Type.newtype(:modified_properties_file) do
 
   # respond to refreshes by calling refresh on the provider
   def refresh
+    deferred_validation
     provider.refresh
   end
 

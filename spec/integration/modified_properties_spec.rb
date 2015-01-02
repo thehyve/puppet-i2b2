@@ -52,7 +52,9 @@ describe Puppet::Type.type(:modified_properties_file) do
     context 'when source is not specified' do
       let(:resource_hash) { r = super(); r.delete :source; r }
       it 'needs target to exist' do
-        expect { type_instance }.to raise_error Puppet::Error, /File '\/non_existant' must exist and be a file unless/
+        expect(type_instance).to be_instance_of(described_class)
+        expect { type_instance.refresh }.to(
+            raise_error Puppet::Error, /File '\/non_existant' must exist and be a file unless/)
       end
     end
 

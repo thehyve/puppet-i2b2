@@ -1,6 +1,8 @@
-require 'pg'
+require File.expand_path(File.join(File.dirname(__FILE__), '..', '..', '..',
+                                   'puppet_x', 'thehyve', 'pg_provider_mixin.rb'))
 
-Puppet::Type.type(:pg_table_row).provide(:pg_table_row_provider) do
+Puppet::Type.type(:table_row).provide(:pg_table_row_provider) do
+  include PuppetX::Thehyve::PgProviderMixin
 
   # ensure property
 
@@ -67,26 +69,6 @@ Puppet::Type.type(:pg_table_row).provide(:pg_table_row_provider) do
     resource[:table]
   end
 
-  def with_connection(&block)
-    params = resource[:connect_params]
-    Puppet.debug "Connecting to PostgreSQL database with parameters #{params}"
-    conn = PG.connect params
-    begin
-      conn.transaction { |c| block[c] }
-    ensure
-      conn.finish
-    end
-  end
-
-  def issue_query(sql, params)
-    i = 0
-    transformed_sql = sql.gsub(/\?/) { "$#{i += 1}" }
-    with_connection do |conn|
-      Puppet.notice "Issuing query #{transformed_sql} with parameters #{params}"
-      conn.exec_params transformed_sql, params
-    end
-  end
-
   def where_clause
     "WHERE " +
         resource[:identity].map do |(k)|
@@ -108,18 +90,6 @@ Puppet::Type.type(:pg_table_row).provide(:pg_table_row_provider) do
 
   def update_fragment
     resource[:values].keys.map { |k| "#{k} = ?"}.join ', '
-  end
-
-  def validate_update_result(sql, params, pgresult)
-    num_tuples = pgresult.cmd_tuples
-    if num_tuples != 1
-      fail "Expected the statement #{sql} with parameters #{params} to " \
-           "affect exactly 1 row; it affected #{num_tuples} instead"
-    end
-  end
-
-  def fail_multiple_rows num_rows
-    fail "Found more than 1 row (#{num_rows}) in table '#{table}' and identity #{resource[:identity]}"
   end
 
 end

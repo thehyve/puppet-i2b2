@@ -71,6 +71,32 @@ module I2b2ParamMixin
       end
     end
   end
+
+  def create_system_user_param
+    newparam :system_user do
+      desc 'If setting the uid is required, the system user to change to.'
+    end
+
+    autorequire(:user) do
+      [self[:system_user]]
+    end
+  end
+
+  def create_connect_params_param
+    new_string_valued_hash_param :connect_params do
+      isrequired
+
+      desc <<-'EOT'
+      The connection parameters for the database. Given in hash form.
+      EOT
+
+      def value
+        super().inject('') do |s, (k, v)|
+          s + "#{k}='" + v.to_s.gsub(/['\\]/, '\\\\\0') + "' "
+        end
+      end
+    end
+  end
 end
 end
 end

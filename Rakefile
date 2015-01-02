@@ -5,4 +5,5 @@ PuppetLint.configuration.fail_on_warnings = true
 PuppetLint.configuration.send('disable_class_inherits_from_params_class')
 PuppetLint.configuration.send('disable_documentation')
 PuppetLint.configuration.send('disable_variables_not_enclosed')
+PuppetLint.configuration.send('disable_80chars')
 PuppetLint.configuration.ignore_paths = ["spec/**/*.pp", "pkg/**/*.pp"]
