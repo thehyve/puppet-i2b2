@@ -11,8 +11,8 @@ class i2b2::params(
   $exploded_war_dir = '/opt/i2b2',
 
   $context = 'i2b2',
-  $local_base_url = 'http://localhost:8080/',
-  $external_base_url = "http://${::fqdn}/",
+  $local_base_url = 'http://localhost:8080',
+  $external_base_url = "http://${::fqdn}",
 
   # connection details for the database; doesn't have to be local
   $database_type, # e.g. postgresql
@@ -33,14 +33,18 @@ class i2b2::params(
   $hive_db_user = 'i2b2hive',
   $hive_db_password = 'i2b2hive',
 
+  # logging
+  $log_dir,
+  $root_logging_level = 'DEBUG',
+
   $container_data_source_implementation = '', # e.g. i2b2::profile::tomcat::container_data_source
 
   # local db only
   $database_user_implementation = '', # e.g. 'i2b2::profile::postgresql::database_user'
   $database_cell_detect_implementation = '', # e.g. 'i2b2::profile::postgresql::no_cell_data_detect'
 ) {
-  $local_url = "$local_base_url$context/"
-  $external_url = "$external_base_url$context/"
+  $local_url = "$local_base_url/$context"
+  $external_url = "$external_base_url/$context"
 
   $database_connect_params = {
     dbname => $database_name,

@@ -10,7 +10,8 @@ class i2b2::profile::postgres inherits i2b2::params {
   Table_row <| |>
 
   Table_row <| |> {
-    system_user => $postgresql::params::user,
+    connect_params => $params::database_connect_params,
+    system_user    => $postgresql::params::user,
   }
 
 #  I2b2::Profile::Postgresql::Database_user <| |>

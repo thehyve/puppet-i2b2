@@ -21,6 +21,4 @@ class i2b2::webclient_root(
                    --strip-components=1 -xf '$webclient_zip'",
     refreshonly => true,
   }
-
-
 }

@@ -21,7 +21,7 @@ class i2b2::i2b2src_files inherits i2b2::params {
   } ~>
   exec { "clean-$dir":
     cwd         => $dir,
-    command     => 'rm -r *',
+    command     => 'find -delete',
     refreshonly => true,
     provider    => shell,
   } ->

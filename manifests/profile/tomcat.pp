@@ -16,6 +16,7 @@ class i2b2::profile::tomcat(
   tomcat_distr::webapp { 'i2b2':
     username        => $params::user,
     webapp_base     => '/home',
+    context         => $params::context,
     number          => $number,
     java_opts       => "-Djava.awt.headless=true -Xmx1300M",
     source          => $context_file_path,
@@ -24,4 +25,7 @@ class i2b2::profile::tomcat(
     service_require => Class['I2b2::Profile::Cells']
   }
 
+  I2b2::Cells::Common <| |>
+  ~>
+  Service['i2b2']
 }

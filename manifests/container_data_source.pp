@@ -2,7 +2,8 @@ define i2b2::container_data_source(
   $user,
   $password,
   $max_conn = 30,
-  $max_idle_conn = 3,
+  $min_idle_conn = 2,
+  $max_idle_conn = 4,
   $type = 'javax.sql.DataSource',
 ) {
   include i2b2::params
@@ -20,6 +21,7 @@ define i2b2::container_data_source(
         username      => $user,
         password      => $password,
         max_conn      => $max_conn,
+        min_idle_conn => $min_idle_conn,
         max_idle_conn => $max_idle_conn,
       }
     })

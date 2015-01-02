@@ -5,6 +5,7 @@ define i2b2::profile::tomcat::container_data_source(
   $username,
   $password,
   $max_conn,
+  $min_idle_conn,
   $max_idle_conn,
 ) {
   include i2b2::params

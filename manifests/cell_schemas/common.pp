@@ -44,4 +44,9 @@ define i2b2::cell_schemas::common(
       }
     })
   }
+
+  i2b2::container_data_source { $database_user:
+    user     => $database_user,
+    password => $database_password,
+  }
 }

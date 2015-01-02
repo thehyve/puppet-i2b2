@@ -5,7 +5,7 @@
              dataSource = (javax.sql.DataSource) context.lookup(dataSourceName);
          } catch (Exception ex) {
 +            String nameInCompEnv = dataSourceName.replaceAll(
-+                    "(?x)(?:java:/)?(?!comp/env)(.+)", "java:/comp/env/$1");
++                    "(?x)\\A(?:java:/)?(?:comp/env/)?(.+)\\z", "java:/comp/env/$1");
 +            if (!nameInCompEnv.equals(dataSourceName)) {
 +                try {
 +                    dataSource = getAppServerDataSource(nameInCompEnv);

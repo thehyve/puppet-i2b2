@@ -6,10 +6,11 @@ class i2b2::profile::tomcat::context_file(
 
   $resources_fragments = "$i2b2::params::intermediate_dir/tomcat_resources.xml.fragments"
 
+  $begin_template = '<Context docBase="<%= @doc_base %>" path="/<%= @context %>" crossContext="true">'
   concat::fragment { "$path-begin":
     target  => $path,
     order   => '1',
-    content => inline_template('<Context docBase="<%= @doc_base %>" path="<%= @context %>" crossContext="true">'),
+    content => inline_template("$begin_template\n"),
   }
 
   concat { $resources_fragments: }
@@ -23,8 +24,7 @@ class i2b2::profile::tomcat::context_file(
   concat::fragment { "$path-epilog":
     target  => $path,
     order   => '3',
-    content => '</Context>'
-
+    content => "</Context>\n",
   }
 
   concat { $path: }

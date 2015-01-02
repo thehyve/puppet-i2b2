@@ -59,11 +59,6 @@ define i2b2::cells::common(
     refreshonly => true,
   }
 
-  Table_row {
-    connect_params => $params::database_connect_params,
-    system_user    => $params::system_user,
-  }
-
   if $bootstrap_prefix != '' {
     $bootstrap_ds_name   = "${bootstrap_prefix}BootStrapDS"
     $bootstrap_ds_params = {
