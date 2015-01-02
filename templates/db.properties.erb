@@ -1,0 +1,6 @@
+# Database setup parameters
+db.type=<%= scope.lookupvar('::i2b2::params::database_type').to_s %>
+db.username=<%= @database_user %>
+db.password=<%= @database_password %>
+db.driver=<%= scope.lookupvar('::i2b2::params::database_driver').to_s %>
+db.url=<%= scope.lookupvar('::i2b2::params::database_jdbc_url').to_s %>

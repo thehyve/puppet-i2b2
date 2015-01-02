@@ -1,7 +1,7 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', '..',
                                    'puppet_x', 'thehyve', 'i2b2_param_mixin.rb'))
 
-Puppet::Type.newtype(:pg_table_row) do
+Puppet::Type.newtype(:table_row) do
   extend PuppetX::Thehyve::I2b2ParamMixin
 
   ensurable
@@ -61,6 +61,10 @@ Puppet::Type.newtype(:pg_table_row) do
     default
 
     desc 'A hash representing the values of the non-identity columns.'
+  end
+
+  newparam :system_user do
+    desc 'If setting the uid is required, the system user to change to.'
   end
 
 end

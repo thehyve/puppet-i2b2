@@ -1,6 +1,12 @@
 require 'pg'
 
-Puppet::Type.type(:pg_table_row).provide(:pg_table_row_provider) do
+Puppet::Type.type(:table_row).provide(:pg_table_row_provider) do
+
+  def initialize(*args)
+    super(*args)
+    # guard to avoid trying to change the user twice
+    @changed_user = false
+  end
 
   # ensure property
 
@@ -70,11 +76,13 @@ Puppet::Type.type(:pg_table_row).provide(:pg_table_row_provider) do
   def with_connection(&block)
     params = resource[:connect_params]
     Puppet.debug "Connecting to PostgreSQL database with parameters #{params}"
-    conn = PG.connect params
-    begin
-      conn.transaction { |c| block[c] }
-    ensure
-      conn.finish
+    with_chosen_user do
+      conn = PG.connect params
+      begin
+        conn.transaction { |c| block[c] }
+      ensure
+        conn.finish
+      end
     end
   end
 
@@ -120,6 +128,21 @@ Puppet::Type.type(:pg_table_row).provide(:pg_table_row_provider) do
 
   def fail_multiple_rows num_rows
     fail "Found more than 1 row (#{num_rows}) in table '#{table}' and identity #{resource[:identity]}"
+  end
+
+  def with_chosen_user
+    user = resource[:system_user]
+    if @changed_user or user.nil?
+      yield
+      return
+    end
+
+    begin
+      @changed_user = true
+      Puppet::Util::SUIDManager.asuser(user) { yield }
+    ensure
+      @changed_user = false
+    end
   end
 
 end
