@@ -25,6 +25,14 @@ class i2b2::params(
 
   $service_user = 'AGG_SERVICE_ACCOUNT',
   $service_user_password,
+  $default_admin_password, # user is always i2b2
+
+  # general hive data
+  # only one domain can be managed
+  $hive_domain_id = 'i2b2',
+  $hive_help_url = 'http://www.i2b2.org',
+  $hive_domain_name = 'i2b2default',
+  $hive_environment = 'PRODUCTION',
 
   # db users and password
   $pm_db_user = 'i2b2pm',

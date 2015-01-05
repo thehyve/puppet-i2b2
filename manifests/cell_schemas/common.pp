@@ -6,6 +6,7 @@ define i2b2::cell_schemas::common(
   $datasource_name = '',
   $additional_targets = [],
 ) {
+  require i2b2
   require i2b2::params
   require i2b2::createdb_files
 

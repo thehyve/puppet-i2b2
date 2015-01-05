@@ -18,10 +18,9 @@ class i2b2::role::i2b2-postgres {
   }
   create_resources('class', $t)
 
-  include i2b2
   include i2b2::profile::postgres
-  include i2b2::profile::cell_schemas
   include i2b2::profile::tomcat
 
-  Class['I2b2::Profile::Cell_schemas'] -> Class['I2b2::Profile::Tomcat']
+  # database must be set up before
+  Class['I2b2::Profile::Postgres'] -> Class['I2b2::Profile::Tomcat']
 }

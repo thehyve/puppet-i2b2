@@ -14,4 +14,13 @@ class i2b2::cells::pm inherits i2b2::params {
     ant_build_xml      => 'build.xml',
     targets            => ['clean', 'dist', 'deploy']
   }
+
+  # default data includes user AGG_SERVICE_ACCOUNT, so we may need to remove it
+  if $params::service_user != 'AGG_SERVICE_ACCOUNT' {
+    i2b2::i2b2_user { 'AGG_SERVICE_ACCOUNT':
+      ensure => absent,
+    }
+    i2b2_user_roles {}
+
+  }
 }

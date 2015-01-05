@@ -63,8 +63,6 @@ Puppet::Type.newtype(:table_row) do
     desc 'A hash representing the values of the non-identity columns.'
   end
 
-  newparam :system_user do
-    desc 'If setting the uid is required, the system user to change to.'
-  end
+  create_system_user_param
 
 end

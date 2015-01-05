@@ -71,6 +71,16 @@ module I2b2ParamMixin
       end
     end
   end
+
+  def create_system_user_param
+    newparam :system_user do
+      desc 'If setting the uid is required, the system user to change to.'
+    end
+
+    autorequire(:user) do
+      [self[:system_user]]
+    end
+  end
 end
 end
 end
