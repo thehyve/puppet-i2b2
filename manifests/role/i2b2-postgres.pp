@@ -8,7 +8,9 @@ class i2b2::role::i2b2-postgres {
   $merged_params = merge(
     # XXX
     {
-      service_user_password => 'foobar',
+      external_base_url      => 'http://10.8.10.192:8080',
+      service_user_password  => 'foobar',
+      default_admin_password => 'foobar',
     },
     $i2b2::profile::tomcat::i2b2_params::data,
     $i2b2::profile::postgresql::i2b2_params::data)

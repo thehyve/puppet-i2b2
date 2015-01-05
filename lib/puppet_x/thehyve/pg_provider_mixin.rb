@@ -14,7 +14,7 @@ module PgProviderMixin
     i = 0
     transformed_sql = sql.gsub(/\?/) { "$#{i += 1}" }
     with_connection do |conn|
-      Puppet.notice "Issuing query #{transformed_sql} with parameters #{params}"
+      Puppet.debug "Issuing query #{transformed_sql} with parameters #{params}"
       conn.exec_params transformed_sql, params
     end
   end

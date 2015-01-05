@@ -20,7 +20,5 @@ class i2b2::cells::pm inherits i2b2::params {
     i2b2::i2b2_user { 'AGG_SERVICE_ACCOUNT':
       ensure => absent,
     }
-    i2b2_user_roles {}
-
   }
 }

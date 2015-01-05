@@ -3,7 +3,6 @@ define i2b2::cell_schemas::common(
   $database_user, # can be managed by us
   $database_password,
   $target_infix,
-  $datasource_name = '',
   $additional_targets = [],
 ) {
   require i2b2

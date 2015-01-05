@@ -17,22 +17,6 @@ Puppet::Type.newtype(:table_row) do
          'Arbitrary'
   end
 
-  new_string_valued_hash_param :connect_params do
-    isrequired
-
-    desc <<-'EOT'
-      The connection parameters for the database. For details, see
-      [the libpq documentation](http://www.postgresql.org/docs/9.4/static/libpq-connect.html#LIBPQ-CONNSTRING).
-      Given in hash form.
-    EOT
-
-    def value
-      super().inject('') do |s, (k, v)|
-        s + "#{k}='" + v.to_s.gsub(/['\\]/, '\\\\\0') + "' "
-      end
-    end
-  end
-
   newparam :table do
     isrequired
 
@@ -62,6 +46,8 @@ Puppet::Type.newtype(:table_row) do
 
     desc 'A hash representing the values of the non-identity columns.'
   end
+
+  create_connect_params_param
 
   create_system_user_param
 

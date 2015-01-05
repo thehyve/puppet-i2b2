@@ -1,12 +1,12 @@
 module Puppet::Parser::Functions
-  const I2B2_LOOKUP_TABLES = {
+  I2B2_LOOKUP_TABLES = {
       'ontology'  => 'ont_db_lookup',
       'im'        => 'im_db_lookup',
       'crc'       => 'crc_db_lookup',
-      'workplace' => 'work_db_lookup',
+      'workspace' => 'work_db_lookup',
   }
 
-  newfunction(:i2b2_project_massage_loookup, :type => :rvalue, :doc => <<-'EOS'
+  newfunction(:i2b2_project_massage_lookup, :type => :rvalue, :doc => <<-'EOS'
     Transforms the project cell database associations in the form
     { ontology => i2b2metadata, ... } into something that can be passed to
     create_resources to create table_row resources.
@@ -29,14 +29,14 @@ module Puppet::Parser::Functions
           {
               :table => "#{hive_user}.#{lookup_table}",
               :identity => {
-                  :domain_id      => domain,
+                  :c_domain_id    => domain,
                   :c_project_path => "#{project}/",
                   :c_owner_id     => '@',
               },
               :values => {
                   :c_db_fullschema => schema,
                   :c_db_datasource => "java:/#{schema}",
-                  :c_db_type       => db_type.upcase,
+                  :c_db_servertype => db_type.upcase,
                   :c_db_nicename   => cell,
               }
 

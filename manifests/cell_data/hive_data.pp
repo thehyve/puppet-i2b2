@@ -1,4 +1,4 @@
-class hive_data {
+class i2b2::cell_data::hive_data {
   require i2b2::cell_schemas::pm
   include i2b2::params
 

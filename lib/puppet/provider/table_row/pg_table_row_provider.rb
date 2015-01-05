@@ -1,4 +1,4 @@
-require File.expand_path(File.join(File.dirname(__FILE__), '..', '..',
+require File.expand_path(File.join(File.dirname(__FILE__), '..', '..', '..',
                                    'puppet_x', 'thehyve', 'pg_provider_mixin.rb'))
 
 Puppet::Type.type(:table_row).provide(:pg_table_row_provider) do

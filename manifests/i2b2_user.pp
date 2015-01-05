@@ -16,7 +16,7 @@ define i2b2::i2b2_user(
     identity => { user_id => $username, },
     values   => {
       full_name => $full_name,
-      password  => md5($password),
+      password  => i2b2_password_hash($password),
       status_cd => $status,
     }
   }

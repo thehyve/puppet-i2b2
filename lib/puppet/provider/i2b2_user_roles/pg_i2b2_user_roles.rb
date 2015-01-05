@@ -1,4 +1,4 @@
-require File.expand_path(File.join(File.dirname(__FILE__), '..', '..',
+require File.expand_path(File.join(File.dirname(__FILE__), '..', '..', '..',
                                    'puppet_x', 'thehyve', 'pg_provider_mixin.rb'))
 
 Puppet::Type.type(:i2b2_user_roles).provide(:pg_i2b2_user_roles) do
@@ -22,8 +22,8 @@ Puppet::Type.type(:i2b2_user_roles).provide(:pg_i2b2_user_roles) do
     removed_roles = roles - should_roles
 
     unless new_roles.empty?
-      insert_sql = "INSERT INTO #{table}(project_id, user_id, user_role_cd, status_cd)" \
-          "VALUES #{new_roles.map { '(?, ?, ?, ?)' }.join(' ')}"
+      insert_sql = "INSERT INTO #{table}(project_id, user_id, user_role_cd, status_cd) " \
+          "VALUES #{new_roles.map { '(?, ?, ?, ?)' }.join(', ')}"
       insert_values = new_roles.map do |role|
         [
             resource[:project],
@@ -56,6 +56,6 @@ Puppet::Type.type(:i2b2_user_roles).provide(:pg_i2b2_user_roles) do
   end
 
   def where_params
-    [resource[:username], resource[:project]]
+    [resource[:project], resource[:username]]
   end
 end

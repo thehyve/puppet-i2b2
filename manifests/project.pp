@@ -21,7 +21,7 @@ define i2b2::project(
 
   table_row { "project $name project_data":
     ensure   => $ensure,
-    table    => "$params::hive_db_user.pm_project_data",
+    table    => "$params::pm_db_user.pm_project_data",
     identity => { 'project_id' => $name },
     values   => {
       project_name => $project_name,
@@ -31,7 +31,7 @@ define i2b2::project(
     }
   }
 
-  $spec = i2b2_project_massage_loookup($name, $params::domain_name /* not id! */,
+  $spec = i2b2_project_massage_lookup($name, $params::hive_domain_name /* not id! */,
     $params::hive_db_user, $params::database_type, $cell_schemas)
 
   create_resources('table_row', $spec, { ensure => $ensure })

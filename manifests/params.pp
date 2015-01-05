@@ -41,6 +41,14 @@ class i2b2::params(
   $hive_db_user = 'i2b2hive',
   $hive_db_password = 'i2b2hive',
 
+  # pool settings
+  $default_pool_settings = {
+    max_conn      => 30,
+    min_idle_conn => 2,
+    max_idle_conn => 6,
+  },
+  $pool_settings = {}, # like default_pool_settings
+
   # logging
   $log_dir,
   $root_logging_level = 'DEBUG',
@@ -53,8 +61,4 @@ class i2b2::params(
 ) {
   $local_url = "$local_base_url/$context"
   $external_url = "$external_base_url/$context"
-
-  $database_connect_params = {
-    dbname => $database_name,
-  }
 }

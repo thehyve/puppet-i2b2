@@ -4,7 +4,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), '..', '..',
 Puppet::Type.newtype(:i2b2_user_roles) do
   extend PuppetX::Thehyve::I2b2ParamMixin
 
-  const VALID_ROLES = %{DATA_OBFSC DATA_AGG DATA_LDS DATA_DEID DATA_PROT USER MANAGER ADMIN}
+  VALID_ROLES = %w{DATA_OBFSC DATA_AGG DATA_LDS DATA_DEID DATA_PROT USER MANAGER ADMIN}
 
   @doc = <<-'EOT'
       Represents a set of roles that a user has in a project.
@@ -22,28 +22,43 @@ Puppet::Type.newtype(:i2b2_user_roles) do
     desc 'The project id.'
   end
 
-  newproperty :roles do
+  newproperty :roles, :array_matching => :all do
     isrequired
 
     desc 'An array with the roles to assign.'
 
-    validate do |value|
-      fail 'Must be an array' unless value.instance_of?(Array)
+    def insync?(is)
+      is.sort == should.sort
+    end
 
-      def insync?(is)
-        is.sort == should.sort
-      end
+    def sync
+      deferred_validate(should)
+      set(should)
+    end
 
-      value.each do |v|
+    # validation must be deferred because whether a value is valid
+    # depends on the current value, and the current value cannot be
+    # made available when the validation occurs (depends on parameters
+    # not assigned yet, like system_user)
+    def deferred_validate(values)
+      cur_values = retrieve
+      devfail("#{cur_values} is not an array") unless cur_values.instance_of?(Array)
+
+      values.each do |v|
         # allow a role we don't recognize if it was already there
-        if retrieve.include?(v) and not VALID_ROLES.include?(v)
+        if cur_values.include?(v) and not VALID_ROLES.include?(v)
           warn "Found current unrecognized role: #{v}"
         end
         fail "Not a valid role: #{v}. Valid roles are #{VALID_ROLES}" unless
-            VALID_ROLES.include?(v) or retrieve.include?(v)
+            VALID_ROLES.
+                include?(v) or cur_values.include?(v)
       end
     end
   end
+
+  create_system_user_param
+
+  create_connect_params_param
 
   # end of parameters
 
@@ -63,12 +78,21 @@ Puppet::Type.newtype(:i2b2_user_roles) do
     ]
   end
 
-  autorequire(:'i2b2::user_roles') do
-    [self[:username]]
-  end
+  def autorequire(rel_catalog = nil)
+    res = []
+    role = rel_catalog.resource(:'I2b2::I2b2_user', self[:username])
+    fail("Could not find I2b2::I2b2_user[#{self[:username]}]") if role.nil?
 
-  autorequire(:'i2b2::project') do
-    [self[:project]]
+    res << Puppet::Relationship.new(role, self)
+
+    unless self[:project] == '@'
+      project = rel_catalog.resource(:'I2b2::Project', self[:project])
+      fail("Could not find I2b2::Project[#{self[:project]}]") if project.nil?
+
+      res << Puppet::Relationship.new(project, self)
+    end
+
+    res
   end
 
   private
