@@ -1,15 +1,28 @@
 class i2b2::webclient_root inherits i2b2::params
 {
-  require i2b2 # if the i2b2 backend is run on a different server this line is to be removed.
+  $domains =
+  [
+    {
+      domain => 'i2b2demo',
+      name => 'HarvardDemo',
+      urlCellPM => 'http://services.i2b2.org/i2b2/services/PMService/',
+      allowAnalysis => true,
+      debug => false,
+    },
+  ]
 
-  ensure_resource('package', 'unzip', {'ensure' => present})
+  $webclient_dir = "$intermediary_files_dir/i2b2webclient-$version"
+  $webclient_zip = "$webclient_dir.zip"
 
-  class {'::apache' : }
+  class {'::apache' :
+    default_vhost => false,
+    mpm_module    => 'prefork',
+  }
   class {'::apache::mod::php' : }
-
-  $webclient_zip = "$intermediary_files_dir/i2b2webclient-$version.zip"
-  $docroot = $apache::docroot
-  $webclient_dir = "$docroot/webclient"
+  apache::vhost { 'localhost':
+    port    => 80,
+    docroot => "$webclient_dir/webclient",
+  }
 
   Exec {
     path => '/bin:/usr/bin',
@@ -20,16 +33,18 @@ class i2b2::webclient_root inherits i2b2::params
     destination => $webclient_zip,
   }
   ~>
-  exec { "extract-$webclient_zip":
-    command     => "rm -rf $webclient_dir && unzip '$webclient_zip' -d '$docroot' ",
+  exec { "create-empty-dir-$webclient_dir" :
+    command     => "rm -rf '$webclient_dir' && mkdir '$webclient_dir'",
     refreshonly => true,
-    require     => [ Class[::apache], Class[::apache::mod::php] ],
   }
   ~>
-  file { "$docroot/webclient/i2b2_config_data.js" :
-    ensure => present,
-    source => 'puppet:///modules/webclient/i2b2_config_data.js',
+  exec { "extract-$webclient_zip":
+    cwd     => $webclient_dir,
+    command => "bsdtar -xf '$webclient_zip'",
+  }
+  ->
+  file { "$webclient_dir/webclient/i2b2_config_data.js" :
+    ensure  => file,
+    content => template('webclient/i2b2_config_data.js.erb'),
   }
 }
-
-

@@ -15,28 +15,34 @@ class i2b2::export_xls inherits i2b2::params
     path => '/bin:/usr/bin',
   }
 
-  file { $export_xls_zip :
-    ensure => present,
-    source => 'puppet:///modules/webclient_export_xls/ExportXLS-v3.3_20140423.zip',
+  wget::fetch { $export_xls_zip :
+    source      => 'http://files.thehyve.net/ExportXLS-v3.3_20140423.zip',
+    destination => $export_xls_zip,
+  }
+  ~>
+  exec { "create-empty-dir-$export_xls_dir" :
+    command     => "rm -rf '$export_xls_dir' && mkdir '$export_xls_dir'",
+    refreshonly => true,
   }
   ~>
   exec { "extract-$export_xls_dir":
-    command     => "rm -rf $export_xls_dir && unzip '$export_xls_zip' -d '$export_xls_dir' ",
+    cwd         => $export_xls_dir,
+    command     => "bsdtar -xf '$export_xls_zip' --strip-components=1",
     refreshonly => true,
   }
   ~>
   exec { "copy-$export_xls_dir" :
-    command     => "cp -r $export_xls_dir/ExportXLS-v3.3/webclient /var/www/html",
+    command     => "cp -r '$export_xls_dir/webclient' $webclient_dir",
     refreshonly => true,
   }
   ~>
   exec { 'insert-script-tag-jQuery' :
-    command     => "$sed_add_jquery $webclient_dir/default.htm",
+    command     => "$sed_add_jquery $webclient_dir/webclient/default.htm",
     refreshonly => true,
   }
   ~>
   exec { 'insert-cell-list' :
-    command     => "$sed_add_cell $webclient_dir/js-i2b2/i2b2_loader.js",
+    command     => "$sed_add_cell $webclient_dir/webclient/js-i2b2/i2b2_loader.js",
     refreshonly => true,
   }
 }
