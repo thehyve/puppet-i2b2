@@ -26,10 +26,10 @@ class i2b2::i2b2src_files inherits i2b2::params {
     provider    => shell,
   } ->
   exec { "extract-$i2b2source_zip":
-    cwd         => $dir,
-    user        => $params::user,
-    command     => "bsdtar -xf '$i2b2source_zip'",
-    creates     => "$dir/edu.harvard.i2b2.server-common"
+    cwd     => $dir,
+    user    => $params::user,
+    command => "bsdtar -xf '$i2b2source_zip'",
+    creates => "$dir/edu.harvard.i2b2.server-common"
   }
 
   file { $i2b2source_zip:

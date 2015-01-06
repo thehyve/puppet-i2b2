@@ -28,8 +28,9 @@ class i2b2::cells::ontology inherits i2b2::params {
     app_dir_key        => 'edu.harvard.i2b2.ontology.applicationdir',
     cell_id            => 'ONT',
     cell_details       => {
-      name => 'Ontology Cell',
-      url  => "$params::external_url/services/OntologyService/",
+      name   => 'Ontology Cell',
+      url    => "$params::external_url/services/OntologyService/",
+      method => REST,
     }
   }
 

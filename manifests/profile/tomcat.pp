@@ -1,6 +1,6 @@
 class i2b2::profile::tomcat(
   $number = '0', # has to be in sync with params::local_base_url
-  $context_file_path = "/opt/i2b2_context.xml",
+  $context_file_path = '/opt/i2b2_context.xml',
 ) inherits i2b2::params {
 
   include i2b2
@@ -19,7 +19,7 @@ class i2b2::profile::tomcat(
     webapp_base     => '/home',
     context         => $params::context,
     number          => $number,
-    java_opts       => "-Djava.awt.headless=true -Xmx1300M",
+    java_opts       => '-Djava.awt.headless=true -Xmx1300M',
     source          => $context_file_path,
     extra_libs      => [$::i2b2::jdbc_driver::file_path],
     manage_user     => false,

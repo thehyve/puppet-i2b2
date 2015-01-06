@@ -42,8 +42,6 @@ Puppet::Type.newtype(:table_row) do
   new_string_valued_hash_param(:values, :create_property => true) do
     isrequired
 
-    default
-
     desc 'A hash representing the values of the non-identity columns.'
   end
 

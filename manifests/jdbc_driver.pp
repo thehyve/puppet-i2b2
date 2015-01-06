@@ -8,7 +8,7 @@ class i2b2::jdbc_driver {
 
   wget::fetch { 'axis_war':
     source      => $jar_url,
-    destination => "$file_path",
+    destination => $file_path,
     require     => File[$::i2b2::params::intermediate_dir],
   } ->
   file { $file_path: }

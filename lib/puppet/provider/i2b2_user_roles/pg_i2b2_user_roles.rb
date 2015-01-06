@@ -41,7 +41,7 @@ Puppet::Type.type(:i2b2_user_roles).provide(:pg_i2b2_user_roles) do
           "AND user_role_cd IN (#{removed_roles.map { '?' }.join(', ')})"
       delete_values = where_params + removed_roles
 
-      issue_query insert_sql, insert_sql
+      issue_query delete_sql, delete_values
     end
   end
 

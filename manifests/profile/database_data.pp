@@ -53,15 +53,5 @@ class i2b2::profile::database_data(
         'im'        => $im_db_user,
       }
     }
-
-    i2b2_user_roles { "${params::service_user}:default":
-      roles => [
-        'USER',
-        'MANAGER',
-        'DATA_OBFSC',
-        'DATA_AGG',
-      ],
-      system_user => 'postgres'
-    }
   }
 }

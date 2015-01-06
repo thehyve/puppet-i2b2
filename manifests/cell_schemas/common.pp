@@ -11,7 +11,7 @@ define i2b2::cell_schemas::common(
 
   $db_properties = "${::i2b2::params::intermediate_dir}/db_${database_user}.properties"
   file { $db_properties:
-    ensure => file,
+    ensure  => file,
     content => template('i2b2/db.properties.erb')
   }
 

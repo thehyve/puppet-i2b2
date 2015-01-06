@@ -1,6 +1,6 @@
 define i2b2::i2b2_user(
-  $username  = $name,
   $ensure    = present,
+  $username  = $name,
   $password  = '',
   $full_name = '',
   $status    = 'A'
@@ -11,9 +11,11 @@ define i2b2::i2b2_user(
   validate_re($ensure, '^present|absent$')
 
   table_row { "i2b2 user $username":
-    table    => "$params::pm_db_user.pm_user_data",
     ensure   => $ensure,
-    identity => { user_id => $username, },
+    table    => "$params::pm_db_user.pm_user_data",
+    identity => {
+      user_id => $username,
+    },
     values   => {
       full_name => $full_name,
       password  => i2b2_password_hash($password),

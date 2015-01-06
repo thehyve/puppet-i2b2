@@ -12,7 +12,7 @@ define i2b2::profile::tomcat::container_data_source(
 
   $resources_file = "$i2b2::params::intermediate_dir/tomcat_resources.xml.fragments"
 
-  concat::fragment { "$resources_file-$name":
+  concat::fragment { "${resources_file}-$name":
     target  => $resources_file,
     content => template('i2b2/tomcat/tomcat_data_source.xml.erb'),
   }

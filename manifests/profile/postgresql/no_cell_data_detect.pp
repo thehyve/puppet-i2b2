@@ -9,7 +9,7 @@ define i2b2::profile::postgresql::no_cell_data_detect(
 
   postgresql_psql { "detect table non-existence on schema $name":
     db      => $dbname,
-    command => "select 1",
+    command => 'select 1',
     unless  => "select 1 from pg_catalog.pg_tables where schemaname = '$name'",
   }
 }

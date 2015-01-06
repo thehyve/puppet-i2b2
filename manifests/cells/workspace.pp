@@ -23,8 +23,9 @@ class i2b2::cells::workspace inherits i2b2::params {
     app_dir_key        => 'edu.harvard.i2b2.workplace.applicationdir',
     cell_id            => 'WORK',
     cell_details       => {
-      name => 'Workplace Cell',
-      url  => "$params::external_url/services/WorkplaceService/",
+      name   => 'Workplace Cell',
+      url    => "$params::external_url/services/WorkplaceService/",
+      method => REST,
     }
   }
 

@@ -1,6 +1,6 @@
-class i2b2::exploded_war inherits params {
-  $axis_url = "http://files.thehyve.net/axis2-$params::axis_version-war.zip"
-  $axis_war = "$params::intermediate_dir/axis2-$params::axis_version-war.zip"
+class i2b2::exploded_war inherits i2b2::params {
+  $axis_url = "http://files.thehyve.net/axis2-${params::axis_version}-war.zip"
+  $axis_war = "$params::intermediate_dir/axis2-${params::axis_version}-war.zip"
 
   $dir                = $params::exploded_war_dir
   $root_logging_level = $params::root_logging_level
@@ -24,11 +24,11 @@ class i2b2::exploded_war inherits params {
     refreshonly => true,
   } ->
   exec { "extract $axis_war":
-    cwd         => $dir,
-    user        => $params::user,
-    command     => "bsdtar -xOf '$axis_war' axis2.war | bsdtar -xf -",
-    creates     => "$dir/WEB-INF",
-    provider    => shell,
+    cwd      => $dir,
+    user     => $params::user,
+    command  => "bsdtar -xOf '$axis_war' axis2.war | bsdtar -xf -",
+    creates  => "$dir/WEB-INF",
+    provider => shell,
   } ->
   file { "$dir/WEB-INF/classes/log4j.properties":
     owner   => $params::user,

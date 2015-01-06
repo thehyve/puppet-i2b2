@@ -41,8 +41,9 @@ class i2b2::cells::crc inherits i2b2::params {
     app_dir_key        => 'edu.harvard.i2b2.crc.applicationdir',
     cell_id            => 'CRC',
     cell_details       => {
-      name => 'Data Repository',
-      url  => "$params::external_url/services/QueryToolService/",
+      name   => 'Data Repository',
+      url    => "$params::external_url/services/QueryToolService/",
+      method => REST,
     }
   }
 }

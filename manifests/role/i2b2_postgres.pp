@@ -1,4 +1,4 @@
-class i2b2::role::i2b2-postgres {
+class i2b2::role::i2b2_postgres {
   # create_resources will hide the proper errors
   # protect against a common one
   #validate_string(hiera('i2b2::params::service_user_password'))

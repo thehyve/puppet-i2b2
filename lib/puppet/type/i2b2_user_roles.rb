@@ -60,6 +60,17 @@ Puppet::Type.newtype(:i2b2_user_roles) do
 
   create_connect_params_param
 
+  newparam :skip_project_dep, :boolean => true do
+    desc 'Whether to skip the dependency on the project (but still check its ' \
+         'existence. For when already exists a containing relationship ' \
+         '(project contains roles)'
+    # can we autodetect this?
+
+    defaultto :false
+    newvalues :true, :false
+  end
+
+
   # end of parameters
 
   def table
@@ -89,7 +100,7 @@ Puppet::Type.newtype(:i2b2_user_roles) do
       project = rel_catalog.resource(:'I2b2::Project', self[:project])
       fail("Could not find I2b2::Project[#{self[:project]}]") if project.nil?
 
-      res << Puppet::Relationship.new(project, self)
+      res << Puppet::Relationship.new(project, self) unless skip_project_dep?
     end
 
     res

@@ -41,6 +41,10 @@ class i2b2::params(
   $hive_db_user = 'i2b2hive',
   $hive_db_password = 'i2b2hive',
 
+  # If defined, when a cell is declared, do not attempt to register it.
+  # Instead, export a resource with this tag.
+  $export_cell_registrations_tag = '',
+
   # pool settings
   $default_pool_settings = {
     max_conn      => 30,

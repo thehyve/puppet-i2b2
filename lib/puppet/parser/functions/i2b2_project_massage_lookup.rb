@@ -21,8 +21,11 @@ module Puppet::Parser::Functions
     entries = associations.map do |(cell, schema)|
       lookup_table = I2B2_LOOKUP_TABLES[cell]
 
-      raise(Puppet::ParseError, "i2b2_project_massage_loookup(): bad cell " \
-          "#{cell} ") if lookup_table.nil?
+      raise(Puppet::ParseError, "i2b2_project_massage_loookup(): bad cell: " \
+          "'#{cell}'") if lookup_table.nil?
+
+      project_path = "#{project}/"
+      project_path = "/#{project_path}" if cell == 'crc' # exception
 
       [
           "lookup-#{project}-#{cell}",
@@ -30,7 +33,7 @@ module Puppet::Parser::Functions
               :table => "#{hive_user}.#{lookup_table}",
               :identity => {
                   :c_domain_id    => domain,
-                  :c_project_path => "#{project}/",
+                  :c_project_path => project_path,
                   :c_owner_id     => '@',
               },
               :values => {

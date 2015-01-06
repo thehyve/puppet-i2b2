@@ -35,11 +35,12 @@ define i2b2::cells::common(
   }
 
   unless $app_dir_prop_file == absent {
+    $dir_prop_values = {
+      "$app_dir_key" => "$i2b2::pseudo_jboss::war_dir/WEB-INF/classes",
+    }
     modified_properties_file { $app_dir_prop_file:
-      values => {
-        "$app_dir_key" => "$i2b2::pseudo_jboss::war_dir/WEB-INF/classes"
-      },
-      notify => Exec["install-$name"]
+      values => $dir_prop_values,
+      notify => Exec["install-$name"],
     }
   }
 
@@ -48,7 +49,7 @@ define i2b2::cells::common(
   }
 
   exec { "check-cell-installed-$name":
-    command => 'true',
+    command => '/bin/true',
     unless  => "test -f $i2b2::params::exploded_war_dir/WEB-INF/lib/$file_to_check",
   }
   ~>
@@ -72,26 +73,24 @@ define i2b2::cells::common(
   unless $cell_details == absent {
     validate_string($cell_details['name'])
     validate_string($cell_details['url'])
+    validate_string($cell_details['method'])
 
-    Class['I2b2::Cell_schemas::Pm']
-    ->
-    table_row { "$name-cell-data":
-      table    => "$pm_cell_user.pm_cell_data",
-      identity => {
-        'cell_id'      => $cell_id,
-        'project_path' => '/',
-      },
-      values => merge(
-        {
-          'method_cd'    => 'REST',
-          'can_override' => '1',
-          'status_cd'    => 'A',
-        },
-        $cell_details
-      ),
+    if $params::export_cell_registrations_tag != '' {
+      @@i2b2::cell_data::pm_cell_registration { $name:
+        url       => $cell_details[url],
+        cell_name => $cell_details[name],
+        cell_id   => $cell_id,
+        method    => $cell_details[method],
+        tag       => $params::export_cell_registrations_tag
+      }
+    } else {
+      i2b2::cell_data::pm_cell_registration { $name:
+        url       => $cell_details[url],
+        cell_name => $cell_details[name],
+        cell_id   => $cell_id,
+        method    => $cell_details[method],
+      }
     }
   }
-
-
 
 }

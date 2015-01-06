@@ -23,8 +23,9 @@ class i2b2::cells::im inherits i2b2::params {
     app_dir_key        => 'edu.harvard.i2b2.im.applicationdir',
     cell_id            => 'IM',
     cell_details       => {
-      name => 'IM Cell',
-      url  => "$params::external_url/services/IMService/",
+      name   => 'IM Cell',
+      url    => "$params::external_url/services/IMService/",
+      method => REST,
     }
   }
 
