@@ -1,0 +1,19 @@
+{
+	urlProxy: "index.php",
+	urlFramework: "js-i2b2/",
+	//-------------------------------------------------------------------------------------------
+	// THESE ARE ALL THE DOMAINS A USER CAN LOGIN TO
+	lstDomains: 
+	[
+		<% @domains.each do |domain| -%>
+		{
+			domain:        "<%= domain['domain'] %>",
+			name:          "<%= domain['name'] %>",
+			urlCellPM:     "<%= domain['urlCellPM'] %>",
+			allowAnalysis: "<%= domain['allowAnalysis'] %>",
+			debug:         "<%= domain['debug'] %>"
+		},
+		<% end -%>
+	]
+	//-------------------------------------------------------------------------------------------
+}
