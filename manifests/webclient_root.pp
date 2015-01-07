@@ -37,8 +37,6 @@ class i2b2::webclient_root inherits i2b2::params
     command     => "rm -rf '$webclient_dir' && mkdir '$webclient_dir'",
     refreshonly => true,
   }
-<<<<<<< HEAD
-=======
   ~>
   exec { "extract-$webclient_zip":
     cwd     => $webclient_dir,
@@ -49,5 +47,4 @@ class i2b2::webclient_root inherits i2b2::params
     ensure  => file,
     content => template('webclient/i2b2_config_data.js.erb'),
   }
->>>>>>> origin/webclient
 }
