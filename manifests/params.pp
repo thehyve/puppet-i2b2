@@ -6,7 +6,7 @@ class i2b2::params(
   $user = 'i2b2',
   $manage_user = false,
 
-  $webclient_dir = '/opt/i2b2_webclient',
+  $webroot_dir = '/opt/i2b2_webroot',
   $axis_version = '1.6.2',
   $exploded_war_dir = '/opt/i2b2',
 
@@ -14,7 +14,7 @@ class i2b2::params(
   $local_base_url = 'http://localhost:8080',
   $external_base_url = "http://${::fqdn}",
 
-  # connection details for the database; doesn't have to be local
+  # connection details for the database; doesn not have to be local
   $database_type, # e.g. postgresql
   $database_driver, # e.g. org.postgresql.Driver
   $database_name = 'i2b2',
@@ -33,6 +33,25 @@ class i2b2::params(
   $hive_help_url = 'http://www.i2b2.org',
   $hive_domain_name = 'i2b2default',
   $hive_environment = 'PRODUCTION',
+
+  # multiple domains can be specified
+  $domains =
+  [
+    {
+      domain => 'i2b2demo',
+      name => 'HarvardDemo',
+      urlCellPM => 'http://services.i2b2.org/i2b2/services/PMService/',
+      allowAnalysis => true,
+      debug => false,
+    },
+    {
+      domain => 'i2b2',
+      name => 'I2B2 at CMI',
+      urlCellPM => $external_base_url,
+      allowAnalysis => true,
+      debug => false,
+    },
+  ],
 
   # db users and password
   $pm_db_user = 'i2b2pm',
