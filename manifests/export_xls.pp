@@ -2,7 +2,7 @@ class i2b2::export_xls inherits i2b2::params
 {
   require i2b2::webclient
 
-  $export_xls_dir = "$intermediary_files_dir/export_xls"
+  $export_xls_dir = "$i2b2::params::intermediate_dir/export_xls"
   $export_xls_zip = "$export_xls_dir.zip"
   $webclient_dir = $i2b2::webclient::webclient_dir
 
@@ -30,7 +30,7 @@ class i2b2::export_xls inherits i2b2::params
   }
   ~>
   exec { "copy-$export_xls_dir" :
-    command     => "cp -r '$export_xls_dir/webclient/*' $webclient_dir",
+    command     => "cp -r '$export_xls_dir/webclient/' '$webclient_dir/..'",
     refreshonly => true,
   }
   ~>
