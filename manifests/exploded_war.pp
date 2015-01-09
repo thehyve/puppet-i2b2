@@ -20,7 +20,7 @@ class i2b2::exploded_war inherits i2b2::params {
   } ~>
   exec { "clean-$dir":
     cwd         => $dir,
-    command     => 'find . -mindepth 1 -maxdepth 1 -exec rm -rf \'{}\' \\;',
+    command     => 'find -delete',
     refreshonly => true,
   } ->
   exec { "extract $axis_war":
