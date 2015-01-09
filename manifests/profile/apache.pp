@@ -19,4 +19,7 @@ class i2b2::profile::apache inherits i2b2::params
   class { 'webclient' :
     webclient_dir => "$webroot_dir/webclient",
   }
+  class{ 'i2b2::admin' :
+    admin_dir => "$webroot_dir/admin",
+  }
 }

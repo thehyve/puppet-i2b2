@@ -8,7 +8,7 @@ class i2b2::role::i2b2_postgres {
   $merged_params = merge(
     # XXX
     {
-      external_base_url      => 'http://10.8.10.192:8080',
+      external_base_url      => 'http://10.8.10.155:8080',
       service_user_password  => 'foobar',
       default_admin_password => 'foobar',
     },
@@ -22,6 +22,8 @@ class i2b2::role::i2b2_postgres {
 
   include i2b2::profile::postgres
   include i2b2::profile::tomcat
+  class{ 'i2b2::profile::apache' : }
+  class{ 'i2b2::export_xls' : }
 
   # database must be set up before
   Class['I2b2::Profile::Postgres'] -> Class['I2b2::Profile::Tomcat']

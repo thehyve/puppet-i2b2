@@ -59,6 +59,7 @@ define i2b2::project(
       'DATA_OBFSC',
       'DATA_AGG',
       'DATA_PROT',
+      'DATA_LDS',
     ],
     default  => [],
   }
