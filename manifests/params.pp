@@ -35,25 +35,6 @@ class i2b2::params(
   $hive_environment = 'PRODUCTION',
 
   # multiple domains can be specified
-  $domains =
-  [
-    {
-      domain => 'i2b2demo',
-      name => 'HarvardDemo',
-      urlCellPM => 'http://services.i2b2.org/i2b2/services/PMService/',
-      allowAnalysis => true,
-      debug => true,
-    },
-    {
-      domain => 'i2b2default',
-      name => 'I2B2 at CMI',
-      urlCellPM => "$external_base_url/i2b2/services/PMService/",
-      allowAnalysis => true,
-      debug => true,
-    },
-  ],
-  
-  $admin_domains = $domains,
   
   # db users and password
   $pm_db_user = 'i2b2pm',
@@ -86,4 +67,25 @@ class i2b2::params(
 ) {
   $local_url = "$local_base_url/$context"
   $external_url = "$external_base_url/$context"
+
+  $default_domains =
+  [
+    {
+      domain => 'i2b2demo',
+      name => 'HarvardDemo',
+      urlCellPM => 'http://services.i2b2.org/i2b2/services/PMService/',
+      allowAnalysis => true,
+      debug => true,
+    },
+    {
+      domain        => $hive_domain_name,
+      name          => "Hive $hive_domain_name",
+      urlCellPM     => "$external_url/services/PMService/",
+      allowAnalysis => true,
+      debug         => true,
+    },
+  ]
+  $webclient_domains = hiera('i2b2::params::webclient_domains', $default_domains)
+  
+  $admin_domains = hiera('i2b2::params::admin_domains', $default_domains)
 }

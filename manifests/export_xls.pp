@@ -43,4 +43,8 @@ class i2b2::export_xls inherits i2b2::params
     command     => "$sed_add_cell $webclient_dir/js-i2b2/i2b2_loader.js",
     refreshonly => true,
   }
+
+  file { $export_xls_zip:
+    require => Wget::Fetch[$export_xls_zip],
+  }
 }

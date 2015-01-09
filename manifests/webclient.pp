@@ -1,9 +1,9 @@
 class i2b2::webclient
 (
   $webclient_dir,
+  $domains = $i2b2::params::webclient_domains
 ) inherits i2b2::params
 {
-  $domains = $i2b2::params::domains
   $webclient_zip = "$intermediate_dir/i2b2webclient-$version.zip"
 
   Exec {
@@ -21,12 +21,17 @@ class i2b2::webclient
   }
   ~>
   exec { "extract-$webclient_zip":
-    cwd     => $webclient_dir,
-    command => "bsdtar -xf '$webclient_zip' --strip-components=1",
+    cwd         => $webclient_dir,
+    command     => "bsdtar -xf '$webclient_zip' --strip-components=1",
+    refreshonly => true,
   }
   ->
   file { "$webclient_dir/i2b2_config_data.js" :
     ensure  => file,
     content => template('webclient/i2b2_config_data.js.erb'),
+  }
+
+  file { $webclient_zip:
+    require => Wget::Fetch[$webclient_zip],
   }
 }
