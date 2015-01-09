@@ -1,5 +1,5 @@
 class i2b2::pseudo_jboss inherits i2b2::params {
-  include i2b2::exploded_war
+  require i2b2::exploded_war
 
   $dir = "$params::intermediate_dir/pseudo-jboss" # public
   $standalone = "$dir/standalone"
