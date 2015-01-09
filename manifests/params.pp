@@ -15,17 +15,17 @@ class i2b2::params(
   $external_base_url = "http://${::fqdn}:8080",
 
   # connection details for the database; does not have to be local
-  $database_type = 'postgresql', # e.g. postgresql
-  $database_driver = 'org.postgresql.Driver', # e.g. org.postgresql.Driver
+  $database_type, # e.g. postgresql
+  $database_driver, # e.g. org.postgresql.Driver
   $database_name = 'i2b2',
   $database_host = 'localhost',
-  $database_jdbc_url = 'jdbc:postgresql://localhost/i2b2;', # e.g. jdbc:postgresql://localhost/i2b2; must be consistent with database_{name, host}
-  $database_jdbc_jar_url = 'http://jdbc.postgresql.org/download/postgresql-9.3-1102.jdbc41.jar', # e.g. 'http://jdbc.postgresql.org/download/postgresql-9.3-1102.jdbc41.jar',
-  $database_system_user = 'postgres', # e.g. postgres
+  $database_jdbc_url, # e.g. jdbc:postgresql://localhost/i2b2; must be consistent with database_{name, host}
+  $database_jdbc_jar_url, # e.g. 'http://jdbc.postgresql.org/download/postgresql-9.3-1102.jdbc41.jar',
+  $database_system_user, # e.g. postgres
 
   $service_user = 'AGG_SERVICE_ACCOUNT',
-  $service_user_password = 'demouser',
-  $default_admin_password = 'demouser', # user is always i2b2
+  $service_user_password,
+  $default_admin_password, # user is always i2b2
 
   # general hive data
   # only one domain can be managed
@@ -34,8 +34,6 @@ class i2b2::params(
   $hive_domain_name = 'i2b2default',
   $hive_environment = 'PRODUCTION',
 
-  # multiple domains can be specified
-  
   # db users and password
   $pm_db_user = 'i2b2pm',
   $pm_db_password = 'i2b2pm',
@@ -56,7 +54,7 @@ class i2b2::params(
   $pool_settings = {}, # like default_pool_settings
 
   # logging
-  $log_dir = '/tmp/log',
+  $log_dir,
   $root_logging_level = 'DEBUG',
 
   $container_data_source_implementation = '', # e.g. i2b2::profile::tomcat::container_data_source
