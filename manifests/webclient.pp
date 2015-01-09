@@ -28,7 +28,7 @@ class i2b2::webclient
   ->
   file { "$webclient_dir/i2b2_config_data.js" :
     ensure  => file,
-    content => template('webclient/i2b2_config_data.js.erb'),
+    content => template('i2b2/webclient_config_data.js.erb'),
   }
 
   file { $webclient_zip:

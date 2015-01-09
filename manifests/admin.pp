@@ -20,6 +20,6 @@ class i2b2::admin
   ->
   file { "$admin_dir/i2b2_config_data.js" :
     ensure  => file,
-    content => template('admin/i2b2_config_data.js.erb'),
+    content => template('i2b2/admin_config_data.js.erb'),
   }
 }
