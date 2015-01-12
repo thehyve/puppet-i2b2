@@ -1,5 +1,3 @@
-require 'java-properties'
-
 Puppet::Type.type(:modified_properties_file).provide(:modified_properties_provider) do
 
   def refresh
@@ -13,20 +11,30 @@ Puppet::Type.type(:modified_properties_file).provide(:modified_properties_provid
       end
     end
 
-    JavaProperties.write(result, resource[:target])
+    write(result, resource[:target])
   end
 
   def current_values
     return @current_values unless @current_values.nil?
     return :absent unless File.file? resource[:target]
 
-    @current_values = JavaProperties.load resource[:target]
+    @current_values = load resource[:target]
   end
 
   private
 
   def template_values
-    JavaProperties.load resource.template_file
+    load resource.template_file
+  end
+
+  def write(*args)
+    require 'java-properties'
+    JavaProperties.write *args
+  end
+
+  def load(*args)
+    require 'java-properties'
+    JavaProperties.load *args
   end
 
 end

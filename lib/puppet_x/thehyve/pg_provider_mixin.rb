@@ -1,5 +1,3 @@
-require 'pg'
-
 module PuppetX
 module Thehyve
 module PgProviderMixin
@@ -50,6 +48,8 @@ module PgProviderMixin
   end
 
   def with_connection(&block)
+    require 'pg'
+
     params = resource[:connect_params]
     Puppet.debug "Connecting to PostgreSQL database with parameters #{params}"
     with_chosen_user do
