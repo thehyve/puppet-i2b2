@@ -6,9 +6,9 @@ class i2b2 inherits i2b2::params {
     force   => true,
   }
 
-  ensure_resource('package', 'bsdtar', {'ensure' => present})
-  ensure_resource('package', 'ant', {'ensure' => present})
-  ensure_resource('package', 'openjdk-7-jdk', {'ensure' => present})
+  if $params::manage_packages {
+    contain i2b2::packages
+  }
 
   if $params::manage_user {
     user { $params::user:

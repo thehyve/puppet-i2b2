@@ -6,6 +6,8 @@ class i2b2::params(
   $user = 'i2b2',
   $manage_user = false,
 
+  $manage_packages = true,
+
   $webroot_dir = '/opt/i2b2_webroot',
   $axis_version = '1.6.2',
   $exploded_war_dir = '/opt/i2b2',
@@ -86,4 +88,13 @@ class i2b2::params(
   $webclient_domains = hiera('i2b2::params::webclient_domains', $default_domains)
   
   $admin_domains = hiera('i2b2::params::admin_domains', $default_domains)
+
+  if $manage_packages {
+    if $::osfamily == 'debian' {
+      $bsdtar_package = 'bsdtar'
+      $java_package = 'openjdk-7-jdk'
+      $ant_package = 'ant'
+      $gems_deps_packages = ['libpq-dev', 'ruby-dev']
+    }
+  }
 }
