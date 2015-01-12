@@ -8,6 +8,11 @@ group :development, :test do
   gem 'puppet-lint',            '~> 1.1.0',  :require => false
 end
 
+group :system_tests do
+  gem 'beaker-rspec', :require => false
+  gem 'serverspec',   :require => false
+end
+
 if puppetversion = ENV['PUPPET_GEM_VERSION']
   gem 'puppet', puppetversion, :require => false
 else
