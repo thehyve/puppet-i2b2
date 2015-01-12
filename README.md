@@ -2,6 +2,7 @@ puppet-i2b2
 ===========
 
 [![Build Status](https://travis-ci.org/thehyve/puppet-i2b2.svg?branch=master)](https://travis-ci.org/thehyve/puppet-i2b2)
+[![Code Climate](https://codeclimate.com/github/thehyve/puppet-i2b2/badges/gpa.svg)](https://codeclimate.com/github/thehyve/puppet-i2b2)
 
 Module for installing i2b2, including the server part, the webclient and the
 admin interface.
