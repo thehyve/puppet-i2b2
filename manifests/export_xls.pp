@@ -13,13 +13,18 @@ class i2b2::export_xls inherits i2b2::params
     path => '/bin:/usr/bin',
   }
 
+  file { $export_xls_dir:
+    ensure => directory,
+  }
+
   wget::fetch { $export_xls_zip :
     source      => 'http://files.thehyve.net/ExportXLS-v3.3_20140423.zip',
     destination => $export_xls_zip,
   }
   ~>
   exec { "create-empty-dir-$export_xls_dir" :
-    command     => "rm -rf '$export_xls_dir' && mkdir '$export_xls_dir'",
+    cwd         => $export_xls_dir,
+    command     => "find -delete",
     refreshonly => true,
   }
   ~>
