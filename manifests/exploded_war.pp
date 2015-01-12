@@ -1,4 +1,6 @@
 class i2b2::exploded_war inherits i2b2::params {
+  require i2b2
+
   $axis_url = "http://files.thehyve.net/axis2-${params::axis_version}-war.zip"
   $axis_war = "$params::intermediate_dir/axis2-${params::axis_version}-war.zip"
 

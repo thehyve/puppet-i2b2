@@ -1,3 +1,5 @@
+require_relative 'i2b2_gem_require'
+
 module PuppetX
 module Thehyve
 module PgProviderMixin
@@ -32,6 +34,8 @@ module PgProviderMixin
 
   private
 
+  include I2b2GemRequire
+
   def with_chosen_user
     user = resource[:system_user]
     if @changed_user or user.nil?
@@ -48,7 +52,7 @@ module PgProviderMixin
   end
 
   def with_connection(&block)
-    require 'pg'
+    gem_require 'pg'
 
     params = resource[:connect_params]
     Puppet.debug "Connecting to PostgreSQL database with parameters #{params}"

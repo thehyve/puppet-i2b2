@@ -1,3 +1,6 @@
+require File.expand_path(File.join(File.dirname(__FILE__), '..', '..', '..',
+                                   'puppet_x', 'thehyve', 'i2b2_gem_require.rb'))
+
 Puppet::Type.type(:modified_properties_file).provide(:modified_properties_provider) do
 
   def refresh
@@ -23,17 +26,19 @@ Puppet::Type.type(:modified_properties_file).provide(:modified_properties_provid
 
   private
 
+  include PuppetX::Thehyve::I2b2GemRequire
+
   def template_values
     load resource.template_file
   end
 
   def write(*args)
-    require 'java-properties'
+    gem_require 'java-properties'
     JavaProperties.write *args
   end
 
   def load(*args)
-    require 'java-properties'
+    gem_require 'java-properties'
     JavaProperties.load *args
   end
 
