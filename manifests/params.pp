@@ -14,7 +14,8 @@ class i2b2::params(
 
   $context = 'i2b2',
   $local_base_url = 'http://localhost:8080',
-  $external_base_url = "http://${::fqdn}:8080",
+  $external_hostname = $::fqdn,
+  $external_base_url_tomcat = "http://${::fqdn}:8080",
 
   # connection details for the database; does not have to be local
   $database_type, # e.g. postgresql
@@ -69,7 +70,7 @@ class i2b2::params(
   $additional_css_sheets = [],
 ) {
   $local_url = "$local_base_url/$context"
-  $external_url = "$external_base_url/$context"
+  $external_url = "$external_base_url_tomcat/$context"
 
   $default_domains =
   [

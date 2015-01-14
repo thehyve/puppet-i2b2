@@ -11,9 +11,23 @@ class i2b2::profile::apache inherits i2b2::params
 
   class {'::apache::mod::php' : }
 
-  apache::vhost { 'localhost':
-    port    => 80,
+  apache::vhost { 'proxy-to-https' :
+    port          => 80,
+    docroot       => $webroot_dir,
+    redirect_dest => "https://$i2b2::params::external_hostname/"
+  }
+
+  apache::vhost { 'localhost' :
+    port    => 443,
     docroot => $webroot_dir,
+    ssl     => true,
+  }
+
+  apache::vhost { 'proxy-to-tomcat' :
+    port       => 8282,
+    ssl        => true,
+    docroot    => $webroot_dir,
+    proxy_dest => 'http://localhost:8080/'
   }
 
   class { 'webclient' :

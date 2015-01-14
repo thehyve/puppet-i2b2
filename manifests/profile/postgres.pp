@@ -14,6 +14,10 @@ class i2b2::profile::postgres inherits i2b2::params {
     dbname => $params::database_name,
   }
 
+  postgresql::server::config_entry { 'max_connections' :
+    value => 200,
+  }
+
   Table_row <| |> {
     connect_params => $database_connect_params,
     system_user    => $postgresql::params::user,

@@ -37,6 +37,12 @@ class i2b2::exploded_war inherits i2b2::params {
     content => template('i2b2/log4j.properties.erb'),
   }
 
+  exec { 'replace-password' :
+    cwd         => "$dir/WEB-INF/conf",
+    command     => 'sed -i \'s#<parameter name="password">axis2</parameter>#<parameter name="password">Z61OaOvXAfsyIJrQ</parameter>#\' axis2.xml',
+    refreshonly => true,
+  }
+
   file { $axis_war:
     require => Wget::Fetch[$axis_war],
   }
