@@ -87,8 +87,8 @@ describe 'i2b2 full stack with postgresql/apache' do
   it 'logs in to the webclient' do
     body_path = '/tmp/i2b2_request.xml'
     create_remote_file default, body_path, request
-    curl(['http://localhost/webclient/index.php',
-         '-H', "'Content-type: text/xml; charset=UTF-8'",
+    curl(['https://localhost/webclient/index.php',
+         '-kH', "'Content-type: text/xml; charset=UTF-8'",
          '--data-binary', "@/#{body_path}"]) do |r|
       result = r.stdout
       expect(result).to match(/<cell_data id="WORK">/)
