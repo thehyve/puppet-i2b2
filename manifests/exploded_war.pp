@@ -8,6 +8,8 @@ class i2b2::exploded_war inherits i2b2::params {
   $root_logging_level = $params::root_logging_level
   $log_dir            = $params::log_dir
 
+  $password = hiera( 'i2b2::axis2::password' )
+
   Exec {
     path => '/bin:/usr/bin'
   }
@@ -38,9 +40,9 @@ class i2b2::exploded_war inherits i2b2::params {
   }
 
   exec { 'replace-password' :
-    cwd         => "$dir/WEB-INF/conf",
-    command     => 'sed -i \'s#<parameter name="password">axis2</parameter>#<parameter name="password">Z61OaOvXAfsyIJrQ</parameter>#\' axis2.xml',
-    refreshonly => true,
+    cwd     => "$dir/WEB-INF/conf",
+    unless  => "grep $password axis2.xml",
+    command => "sed -i 's#<parameter name=\"password\">.*</parameter>#<parameter name=\"password\">$password</parameter>#' axis2.xml",
   }
 
   file { $axis_war:
