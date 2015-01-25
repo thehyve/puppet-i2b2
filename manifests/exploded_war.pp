@@ -39,7 +39,13 @@ class i2b2::exploded_war inherits i2b2::params {
     content => template('i2b2/log4j.properties.erb'),
   }
 
-  exec { 'replace-password' :
+  Exec["extract $axis_war"] ->
+  file { "$dir/WEB-INF/conf":
+    ensure  => directory,
+  }
+
+  # TODO: not rubost
+  exec { 'replace-axis-password' :
     cwd     => "$dir/WEB-INF/conf",
     unless  => "grep $password axis2.xml",
     command => "sed -i 's#<parameter name=\"password\">.*</parameter>#<parameter name=\"password\">$password</parameter>#' axis2.xml",
