@@ -11,6 +11,7 @@ class i2b2::params(
   $webroot_dir = '/opt/i2b2_webroot',
   $axis_version = '1.6.2',
   $exploded_war_dir = '/opt/i2b2',
+  $axis_admin_password,
 
   $context = 'i2b2',
   $local_base_url = 'http://localhost:8080',
