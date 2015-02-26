@@ -23,22 +23,24 @@ RSpec.configure do |c|
 
   c.logger = Beaker::Logger.new(log_level: 'debug', color: false)
 
-  hosts.each do |host|
-    on host, 'apt-get update'
-    on host, 'apt-get install -y puppet wget'
-    on host, 'touch /etc/puppet/hiera.yaml'
-
-    # TODO: checkout our private modules repository instead
-    on host, puppet('module', 'install', 'puppetlabs-stdlib', '--version', '4.2.1')
-    on host, puppet('module', 'install', 'puppetlabs-postgresql', '--version', '4.0.0')
-    on host, puppet('module', 'install', '--force', 'puppetlabs-concat', '--version', '1.1.0-rc1')
-    on host, puppet('module', 'install', 'puppetlabs-apache', '--version', '1.1.1')
-    on host, puppet('module', 'install', 'b4ldr-logrotate', '--version', '1.1.2')
-    on host, puppet('module', 'install', 'maestrodev-wget', '--version', '1.1.0')
-    on host, 'mkdir -p /etc/puppet/modules'
-    on host, "wget -O - '#{tomcat_distr_url}' | tar -C /etc/puppet/modules -xJf -"
-    on host, "mkdir -p /var/lib/puppet/lib/puppet/parser/functions/"
-    on host, "wget -O /var/lib/puppet/lib/puppet/parser/functions/port_uq_convert.rb " \
-             "'#{port_uq_convert_url}'"
+  if ENV['BEAKER_provision'] == 'yes' 
+    hosts.each do |host|
+      on host, 'apt-get update'
+      on host, 'apt-get install -y puppet wget'
+      on host, 'touch /etc/puppet/hiera.yaml'
+  
+      # TODO: checkout our private modules repository instead
+      on host, puppet('module', 'install', 'puppetlabs-stdlib', '--version', '4.2.1')
+      on host, puppet('module', 'install', 'puppetlabs-postgresql', '--version', '4.0.0')
+      on host, puppet('module', 'install', '--force', 'puppetlabs-concat', '--version', '1.1.0-rc1')
+      on host, puppet('module', 'install', 'puppetlabs-apache', '--version', '1.1.1')
+      on host, puppet('module', 'install', 'b4ldr-logrotate', '--version', '1.1.2')
+      on host, puppet('module', 'install', 'maestrodev-wget', '--version', '1.1.0')
+      on host, 'mkdir -p /etc/puppet/modules'
+      on host, "wget -O - '#{tomcat_distr_url}' | tar -C /etc/puppet/modules -xJf -"
+      on host, "mkdir -p /var/lib/puppet/lib/puppet/parser/functions/"
+      on host, "wget -O /var/lib/puppet/lib/puppet/parser/functions/port_uq_convert.rb " \
+               "'#{port_uq_convert_url}'"
+    end
   end
 end
