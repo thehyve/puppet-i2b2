@@ -24,7 +24,7 @@ class i2b2::export_xls inherits i2b2::params
   ~>
   exec { "create-empty-dir-$export_xls_dir" :
     cwd         => $export_xls_dir,
-    command     => "find -delete",
+    command     => 'find -delete',
     refreshonly => true,
   }
   ~>

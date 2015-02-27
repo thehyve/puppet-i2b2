@@ -23,7 +23,7 @@ RSpec.configure do |c|
 
   c.logger = Beaker::Logger.new(log_level: 'debug', color: false)
 
-  if ENV['BEAKER_provision'] == 'yes' 
+  unless ENV['BEAKER_provision'] == 'no'
     hosts.each do |host|
       on host, 'apt-get update'
       on host, 'apt-get install -y puppet wget'

@@ -24,5 +24,4 @@ The `BEAKER_debug` variable shows the commands being run on the STU and their
 output. `BEAKER_destroy=no` prevents the machine destruction after the tests
 finish so you can inspect the state. `BEAKER_provision=no` prevents the machine
 from being recreated. This can save a lot of time while you're writing the
-tests. You will want to comment out the commands run on the host on
-`spec_helper_acceptance.rb` as well.
+tests.
