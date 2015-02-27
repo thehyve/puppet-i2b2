@@ -6,7 +6,7 @@ class i2b2::webclient
 {
   $webclient_zip = "$intermediate_dir/i2b2webclient-$version.zip"
   $css_declaration = '<link href="cmi_data_portal_override.php" title="override" rel="stylesheet" type="text/css" \/>'
-  $css_sed_expr = "/<\/head>/i$css_declaration"
+  $css_sed_expr = "/<\\/head>/i$css_declaration"
 
   Exec {
     path => '/bin:/usr/bin',
