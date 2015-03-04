@@ -1,12 +1,11 @@
 class i2b2::webclient
 (
   $webclient_dir,
-  $domains = $i2b2::params::webclient_domains
+  $domains = $i2b2::params::webclient_domains,
+  $css_sheets = $i2b2::params::additional_css_sheets,
 ) inherits i2b2::params
 {
   $webclient_zip = "$intermediate_dir/i2b2webclient-$version.zip"
-  $css_declaration = '<link href="cmi_data_portal_override.php" title="override" rel="stylesheet" type="text/css" \/>'
-  $css_sed_expr = "/<\\/head>/i$css_declaration"
 
   Exec {
     path => '/bin:/usr/bin',
@@ -33,16 +32,21 @@ class i2b2::webclient
     content => template('i2b2/webclient_config_data.js.erb'),
   }
 
-  file { "$webclient_dir/cmi_data_portal_override.php" :
-    ensure => file,
-    source => 'puppet:///modules/i2b2/cmi_data_portal_override.php',
+  file { "$webclient_dir/proxy.php" :
+    ensure  => file,
+    content => template('i2b2/proxy.php.erb'),
   }
 
+  file { "$intermediate_dir/css_declarations.xml":
+    ensure  => file,
+    content => template('i2b2/css_declarations.erb'),
+    require => Exec[ "extract-$webclient_zip" ],
+  }
+  ~>
   exec { 'insert-css' :
     cwd     => $webclient_dir,
-    command => "sed -i '$css_sed_expr' default.htm",
-    unless  => "grep '$css_declaration' default.htm",
-    require => Exec[ "extract-$webclient_zip" ],
+    command => "sed -i -e '/<\\/head>/r $intermediate_dir/css_declarations.xml' -e //N default.htm",
+    unless  => "test ! -s $intermediate_dir/css_declarations.xml ||  grep -f $intermediate_dir/css_declarations.xml default.htm",
   }
 
   file { $webclient_zip:
