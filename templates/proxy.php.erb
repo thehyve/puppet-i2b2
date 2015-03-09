@@ -1,9 +1,9 @@
 <?php
   $allowed_urls = [
-<% @css_sheets.each do |sheet| -%>
-  <%= sheet['local']?'':'"'+sheet['filename']+'",' %>
+<% @css_sheets.select { |x| !x['local'] }.each do |sheet| -%>
+  "<%= sheet[ 'filename' ] %>",
 <% end -%>
   ];
 
-  if( in_array( $_GET[ 'url' ], $allowed_urls ) )
+  if( isset( $_GET[ 'url' ] ) && is_string( $_GET[ 'url' ] ) && in_array( $_GET[ 'url' ], $allowed_urls ) )
     readFile( $_GET[ 'url' ] );

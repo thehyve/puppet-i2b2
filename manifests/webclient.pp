@@ -45,7 +45,7 @@ class i2b2::webclient
   ~>
   exec { 'insert-css' :
     cwd     => $webclient_dir,
-    command => "sed -i -e '/<\\/head>/r $intermediate_dir/css_declarations.xml' -e //N default.htm",
+    command => "bsdtar -xf '$webclient_zip' webclient/default.htm;  sed -i -e '/<\\/head>/r $intermediate_dir/css_declarations.xml' -e //N default.htm",
     unless  => "test ! -s $intermediate_dir/css_declarations.xml ||  grep -f $intermediate_dir/css_declarations.xml default.htm",
   }
 
