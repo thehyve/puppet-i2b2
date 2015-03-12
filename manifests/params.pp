@@ -64,6 +64,9 @@ class i2b2::params(
   # local db only
   $database_user_implementation = '', # e.g. 'i2b2::profile::postgresql::database_user'
   $database_cell_detect_implementation = '', # e.g. 'i2b2::profile::postgresql::no_cell_data_detect'
+
+  # specified like this [ { local => true, filename => 'test_local' }, { local =>false, filename => 'http://testremote.com/remote.css' } ]
+  $additional_css_sheets = [],
 ) {
   $local_url = "$local_base_url/$context"
   $external_url = "$external_base_url/$context"

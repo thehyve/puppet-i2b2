@@ -1,0 +1,3 @@
+<% @css_sheets.each do |sheet| -%>
+  <link href="<%= CGI::escapeHTML( sheet[ 'local' ] ? sheet[ 'filename' ] : 'proxy.php?url=' + CGI::escape( sheet[ 'filename' ] ) ) %>" rel="stylesheet" type="text/css" />
+<% end -%>
