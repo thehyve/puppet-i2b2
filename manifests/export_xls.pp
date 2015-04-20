@@ -42,15 +42,14 @@ forceDir: \"cells/plugins/standard\"\\n},#'"
     command     => "cp -r '$export_xls_dir/webclient/' '$webclient_dir/..'",
     refreshonly => true,
   }
-  ~>
+
   exec { 'insert-script-tag-jQuery' :
-    command     => "$sed_add_jquery $webclient_dir/default.htm",
-    refreshonly => true,
+    command => "$sed_add_jquery '$webclient_dir/default.htm'",
+    unless  => "grep js-ext/jquery-1.6.1 '$webclient_dir/default.htm'",
   }
-  ~>
   exec { 'insert-cell-list' :
-    command     => "$sed_add_cell $webclient_dir/js-i2b2/i2b2_loader.js",
-    refreshonly => true,
+    command => "$sed_add_cell '$webclient_dir/js-i2b2/i2b2_loader.js'",
+    unless  => "grep ExportXLS '$webclient_dir/js-i2b2/i2b2_loader.js'",
   }
 
   file { $export_xls_zip:
