@@ -23,17 +23,6 @@ class i2b2::profile::apache inherits i2b2::params
     ssl     => true,
   }
 
-  apache::vhost { 'proxy-to-tomcat' :
-    port       => 8282,
-    ssl        => true,
-    docroot    => $webroot_dir,
-    proxy_dest => 'http://localhost:8080/'
-  }
-
-  class { 'webclient' :
-    webclient_dir => "$webroot_dir/webclient",
-  }
-  class { 'i2b2::admin' :
-    admin_dir => "$webroot_dir/admin",
-  }
+  include ::i2b2::webclient
+  include ::i2b2::admin
 }

@@ -91,8 +91,10 @@ class i2b2::params(
     },
   ]
   $webclient_domains = hiera('i2b2::params::webclient_domains', $default_domains)
-  
+  $webclient_dir = "$webroot_dir/webclient"
+
   $admin_domains = hiera('i2b2::params::admin_domains', $default_domains)
+  $admin_dir = "$webroot_dir/admin"
 
   if $manage_packages {
     if $::osfamily == 'debian' {

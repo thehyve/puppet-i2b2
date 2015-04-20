@@ -1,6 +1,6 @@
 class i2b2::webclient
 (
-  $webclient_dir,
+  $webclient_dir = $i2b2::params::webclient_dir,
   $domains = $i2b2::params::webclient_domains,
   $css_sheets = $i2b2::params::additional_css_sheets,
 ) inherits i2b2::params

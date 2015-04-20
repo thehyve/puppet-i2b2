@@ -1,6 +1,6 @@
 class i2b2::admin
 (
-  $admin_dir,
+  $admin_dir = $i2b2::params::admin_dir,
   $domains = $i2b2::params::admin_domains
 ) inherits i2b2::params
 {
