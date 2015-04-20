@@ -9,9 +9,9 @@ class i2b2::profile::apache inherits i2b2::params
     mpm_module    => 'prefork',
   }
 
-  class {'::apache::mod::php' : }
+  include ::apache::mod::php
 
-  apache::vhost { 'proxy-to-https' :
+  apache::vhost { 'proxy-to-https':
     port          => 80,
     docroot       => $webroot_dir,
     redirect_dest => "https://$i2b2::params::external_hostname/"
@@ -33,7 +33,7 @@ class i2b2::profile::apache inherits i2b2::params
   class { 'webclient' :
     webclient_dir => "$webroot_dir/webclient",
   }
-  class{ 'i2b2::admin' :
+  class { 'i2b2::admin' :
     admin_dir => "$webroot_dir/admin",
   }
 }
