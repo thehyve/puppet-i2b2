@@ -27,7 +27,7 @@ class i2b2::webclient
 
   exec { "extract-$webclient_zip":
     cwd     => $webclient_dir,
-    command => "bsdtar -xf '$webclient_zip' --strip-components=1",
+    command => "bsdtar -xf '$webclient_zip' --no-same-owner --no-same-permissions --strip-components=1",
     unless  => "test -d '$webclient_dir/help'"
   }
   ->
