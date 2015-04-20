@@ -41,12 +41,12 @@ class i2b2::exploded_war inherits i2b2::params {
   Exec["extract $axis_war"] ->
   file { "$dir/WEB-INF/conf":
     ensure  => directory,
-  }
-
-  exec { 'replace-axis-password' :
-    cwd     => "$dir/WEB-INF/conf",
-    unless  => "grep '<parameter name=\"password\">$password</parameter>' axis2.xml",
-    command => "sed -i 's#<parameter name=\"password\">.*</parameter>#<parameter name=\"password\">$password</parameter>#' axis2.xml",
+  } ->
+  augeas { 'replace-axis-password' :
+    incl    => "$dir/WEB-INF/conf/axis2.xml",
+    lens    => 'Xml.lns',
+    context => "/files/$dir/WEB-INF/conf/axis2.xml/axisconfig",
+    changes => "set parameter[./#attribute/name='password']/#text $password"
   }
 
   file { $axis_war:
