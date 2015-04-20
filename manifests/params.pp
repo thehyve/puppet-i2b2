@@ -15,7 +15,7 @@ class i2b2::params(
 
   $context = 'i2b2',
   $local_base_url = 'http://localhost:8080',
-  $external_hostname = $::fqdn,
+  $external_hostname = $::fqdn, # right now for the webserver vhost only (webclient)
   $external_base_url_tomcat = "http://${::fqdn}:8080",
 
   # connection details for the database; does not have to be local

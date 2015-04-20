@@ -1,8 +1,8 @@
 class i2b2::webclient
 (
   $webclient_dir = $i2b2::params::webclient_dir,
-  $domains = $i2b2::params::webclient_domains,
-  $css_sheets = $i2b2::params::additional_css_sheets,
+  $domains       = $i2b2::params::webclient_domains,
+  $css_sheets    = $i2b2::params::additional_css_sheets,
 ) inherits i2b2::params
 {
   $webclient_zip = "$intermediate_dir/i2b2webclient-$version.zip"
@@ -44,12 +44,14 @@ class i2b2::webclient
   file { "$intermediate_dir/css_declarations.xml":
     ensure  => file,
     content => template('i2b2/css_declarations.erb'),
-    require => Exec[ "extract-$webclient_zip" ],
+    require => Exec["extract-$webclient_zip"],
   }
   ~>
   exec { 'insert-css' :
     cwd         => $webclient_dir,
-    command     => "bsdtar -xf '$webclient_zip' webclient/default.htm && sed -i -e '/<\\/head>/r $intermediate_dir/css_declarations.xml' -e //N default.htm",
+    command     => "bsdtar -xf '$webclient_zip' \
+                    --no-same-owner --no-same-permissions --strip-components 1 webclient/default.htm \
+                    && sed -i -e '/<\\/head>/r $intermediate_dir/css_declarations.xml' -e //N default.htm",
     refreshonly => true,
     subscribe   => Exec["extract-$webclient_zip"]
   }
