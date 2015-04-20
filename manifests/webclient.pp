@@ -21,6 +21,10 @@ class i2b2::webclient
     refreshonly => true,
   }
   ~>
+  file { $webclient_dir:
+    ensure => directory,
+  }
+  ~>
   exec { "extract-$webclient_zip":
     cwd         => $webclient_dir,
     command     => "bsdtar -xf '$webclient_zip' --strip-components=1",
