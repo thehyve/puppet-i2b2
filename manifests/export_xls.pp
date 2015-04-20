@@ -6,8 +6,12 @@ class i2b2::export_xls inherits i2b2::params
   $export_xls_zip = "$export_xls_dir.zip"
   $webclient_dir = $i2b2::webclient::webclient_dir
 
-  $sed_add_jquery = 'sed -i \'0,/<script/ s#<script#<script type="text/javascript" src="js-ext/jquery-1.6.1.min.js"></script>\n<script>\n\tvar $j = jQuery.noConflict();\n</script>\n<script#\' '
-  $sed_add_cell = 'sed -i \'0,/i2b2.hive.tempCellsList/ s#i2b2.hive.tempCellsList = \[#i2b2.hive.tempCellsList = \[\n{ code: "ExportXLS",\nforceLoading: true,\nforceConfigMsg: { params: [] },\nforceDir: "cells/plugins/standard"\n},#\' '
+  $sed_add_jquery = "sed -i '0,/<script/ s#<script#<script type=\"text/javascript\" \
+src=\"js-ext/jquery-1.6.1.min.js\"></script>\\n<script>\\n\\tvar \
+\$j = jQuery.noConflict();\\n</script>\\n<script#' "
+  $sed_add_cell = "sed -i '0,/i2b2.hive.tempCellsList/ s#i2b2.hive.tempCellsList = \\[#i2b2.hive.tempCellsList = \
+\\[\\n{ code: \"ExportXLS\",\\nforceLoading: true,\\nforceConfigMsg: { params: [] },\\n\
+forceDir: \"cells/plugins/standard\"\\n},#'"
 
   Exec {
     path => '/bin:/usr/bin',
