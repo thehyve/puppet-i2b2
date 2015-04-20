@@ -11,16 +11,17 @@ class i2b2::profile::apache inherits i2b2::params
 
   include ::apache::mod::php
 
-  apache::vhost { 'proxy-to-https':
+  apache::vhost { "http-$i2b2::params::external_hostname":
     port          => 80,
     docroot       => $webroot_dir,
-    redirect_dest => "https://$i2b2::params::external_hostname/"
+    redirect_dest => "https://$i2b2::params::external_hostname/",
   }
 
-  apache::vhost { 'localhost' :
+  apache::vhost { "https-$i2b2::params::external_hostname":
     port    => 443,
     docroot => $webroot_dir,
     ssl     => true,
+    headers => 'set Strict-Transport-Security "max-age=15768000"',
   }
 
   include ::i2b2::webclient
