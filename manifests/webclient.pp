@@ -20,15 +20,15 @@ class i2b2::webclient
     command     => "rm -rf '$webclient_dir' && mkdir '$webclient_dir'",
     refreshonly => true,
   }
-  ~>
+  ->
   file { $webclient_dir:
     ensure => directory,
   }
-  ~>
+
   exec { "extract-$webclient_zip":
-    cwd         => $webclient_dir,
-    command     => "bsdtar -xf '$webclient_zip' --strip-components=1",
-    refreshonly => true,
+    cwd     => $webclient_dir,
+    command => "bsdtar -xf '$webclient_zip' --strip-components=1",
+    unless  => "test -d '$webclient_dir/help'"
   }
   ->
   file { "$webclient_dir/i2b2_config_data.js" :
@@ -51,6 +51,7 @@ class i2b2::webclient
     cwd         => $webclient_dir,
     command     => "bsdtar -xf '$webclient_zip' webclient/default.htm && sed -i -e '/<\\/head>/r $intermediate_dir/css_declarations.xml' -e //N default.htm",
     refreshonly => true,
+    subscribe   => Exec["extract-$webclient_zip"]
   }
 
   file { $webclient_zip:
