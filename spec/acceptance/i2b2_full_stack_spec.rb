@@ -6,10 +6,6 @@ describe 'i2b2 full stack with postgresql/apache' do
       include i2b2::profile::postgresql::i2b2_params
       include i2b2::profile::tomcat::i2b2_params
       $merged_params = merge(
-          {
-            service_user_password  => 'barfoo',
-            default_admin_password => 'foobar',
-          },
           $i2b2::profile::tomcat::i2b2_params::data,
           $i2b2::profile::postgresql::i2b2_params::data)
 

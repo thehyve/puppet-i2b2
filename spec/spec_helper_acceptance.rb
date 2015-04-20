@@ -28,7 +28,8 @@ RSpec.configure do |c|
       on host, 'apt-get update'
       on host, 'apt-get install -y puppet wget'
       on host, 'touch /etc/puppet/hiera.yaml'
-      on host, 'mkdir /var/lib/hiera && echo \'i2b2::axis2::password: "foobarbarian"\' > /var/lib/hiera/common.yaml'
+      #on host, 'mkdir /var/lib/hiera'
+      scp_to host, 'spec/acceptance/hieradata', '/var/lib/hiera'
 
       # TODO: checkout our private modules repository instead
       on host, puppet('module', 'install', 'puppetlabs-stdlib', '--version', '4.2.1')
