@@ -105,6 +105,8 @@ class i2b2::params(
       $java_package = 'openjdk-7-jdk'
       $ant_package = 'ant'
       $gems_deps_packages = ['libpq-dev', 'ruby-dev']
+      $php_curl_package = 'php5-curl'
+      $ssl_key_group = 'ssl-cert'
     }
   }
 }
