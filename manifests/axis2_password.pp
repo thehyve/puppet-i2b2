@@ -10,5 +10,5 @@ class i2b2::axis2_password(
     lens    => 'Xml.lns',
     context => "/files/$exploded_war_dir/WEB-INF/conf/axis2.xml/axisconfig",
     changes => "set parameter[./#attribute/name='password']/#text $password"
-  }
+  } ~> Service['i2b2']
 }
