@@ -6,6 +6,7 @@ class i2b2::webclient
 ) inherits i2b2::params
 {
   $webclient_zip = "$intermediate_dir/i2b2webclient-$version.zip"
+  $admin_only = false # for template config_data.js.erb
 
   Exec {
     path => '/bin:/usr/bin',
@@ -33,7 +34,7 @@ class i2b2::webclient
   ->
   file { "$webclient_dir/i2b2_config_data.js" :
     ensure  => file,
-    content => template('i2b2/webclient_config_data.js.erb'),
+    content => template('i2b2/config_data.js.erb'),
   }
 
   file { "$webclient_dir/proxy.php" :
