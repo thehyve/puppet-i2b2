@@ -69,6 +69,9 @@ class i2b2::params(
 
   # specified like this [ { local => true, filename => 'test_local' }, { local =>false, filename => 'http://testremote.com/remote.css' } ]
   $additional_css_sheets = [],
+
+  $admin_proxy_prefixes = '',     # array, '' for default
+  $webclient_proxy_prefixes = '', # array, '' for default
 ) {
   $local_url = "$local_base_url/$context"
   $external_url = "$external_base_url_tomcat/$context"

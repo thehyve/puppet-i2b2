@@ -3,6 +3,7 @@ class i2b2::webclient
   $webclient_dir = $i2b2::params::webclient_dir,
   $domains       = $i2b2::params::webclient_domains,
   $css_sheets    = $i2b2::params::additional_css_sheets,
+  $prefixes      = $i2b2::params::webclient_proxy_prefixes,
 ) inherits i2b2::params
 {
   $webclient_zip = "$intermediate_dir/i2b2webclient-$version.zip"
@@ -59,5 +60,17 @@ class i2b2::webclient
 
   file { $webclient_zip:
     require => Wget::Fetch[$webclient_zip],
+  }
+
+  if $prefixes != '' {
+    $proxy_prefixes = $prefixes
+  } else {
+    $proxy_prefixes = i2b2_domains_to_prefixes($domains)
+  }
+
+  Exec["extract-$webclient_zip"]
+  ->
+  file { "$webclient_dir/index.php":
+    content => template('i2b2/index.php.erb'),
   }
 }

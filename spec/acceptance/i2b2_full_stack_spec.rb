@@ -31,7 +31,7 @@ describe 'i2b2 full stack with postgresql/apache' do
 <i2b2:request xmlns:i2b2="http://www.i2b2.org/xsd/hive/msg/1.1/" xmlns:pm="http://www.i2b2.org/xsd/cell/pm/1.1/">
     <message_header>
         <proxy>
-            <redirect_url>http://localhost:8080/i2b2/services/PMService/getServices</redirect_url>
+            <redirect_url>http://#{fact('fqdn')}:8080/i2b2/services/PMService/getServices</redirect_url>
         </proxy>
 
         <i2b2_version_compatible>1.1</i2b2_version_compatible>

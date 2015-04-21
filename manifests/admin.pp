@@ -1,7 +1,8 @@
 class i2b2::admin
 (
   $admin_dir = $i2b2::params::admin_dir,
-  $domains = $i2b2::params::admin_domains
+  $domains = $i2b2::params::admin_domains,
+  $prefixes = $i2b2::params::admin_proxy_prefixes,
 ) inherits i2b2::params
 {
   require i2b2::i2b2src_files
@@ -24,5 +25,14 @@ class i2b2::admin
     content => template('i2b2/config_data.js.erb'),
   }
 
+  if $prefixes != '' {
+    $proxy_prefixes = $prefixes
+  } else {
+    $proxy_prefixes = i2b2_domains_to_prefixes($domains)
   }
+
+  file { "$admin_dir/index.php":
+    content => template('i2b2/index.php.erb'),
+  }
+
 }
