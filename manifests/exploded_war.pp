@@ -1,6 +1,8 @@
 class i2b2::exploded_war inherits i2b2::params {
   require i2b2
 
+  include i2b2::axis2_password
+
   $axis_url = "http://files.thehyve.net/axis2-${params::axis_version}-war.zip"
   $axis_war = "$params::intermediate_dir/axis2-${params::axis_version}-war.zip"
 
@@ -35,6 +37,11 @@ class i2b2::exploded_war inherits i2b2::params {
   file { "$dir/WEB-INF/classes/log4j.properties":
     owner   => $params::user,
     content => template('i2b2/log4j.properties.erb'),
+  }
+
+  Exec["extract $axis_war"] ->
+  file { "$dir/WEB-INF/conf":
+    ensure  => directory,
   }
 
   file { $axis_war:

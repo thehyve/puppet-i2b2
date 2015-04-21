@@ -28,12 +28,16 @@ RSpec.configure do |c|
       on host, 'apt-get update'
       on host, 'apt-get install -y puppet wget'
       on host, 'touch /etc/puppet/hiera.yaml'
-  
+      scp_to host, 'spec/acceptance/hieradata', '/var/lib/hiera'
+
+      fqdn = fact('fqdn')
+      on host, puppet('resource', 'host', fqdn, 'ensure=present', 'ip=127.0.0.1',)
+
       # TODO: checkout our private modules repository instead
       on host, puppet('module', 'install', 'puppetlabs-stdlib', '--version', '4.2.1')
-      on host, puppet('module', 'install', 'puppetlabs-postgresql', '--version', '4.0.0')
+      on host, puppet('module', 'install', 'puppetlabs-postgresql', '--version', '4.3.0')
       on host, puppet('module', 'install', '--force', 'puppetlabs-concat', '--version', '1.1.0-rc1')
-      on host, puppet('module', 'install', 'puppetlabs-apache', '--version', '1.1.1')
+      on host, puppet('module', 'install', 'puppetlabs-apache', '--version', '1.4.0')
       on host, puppet('module', 'install', 'b4ldr-logrotate', '--version', '1.1.2')
       on host, puppet('module', 'install', 'maestrodev-wget', '--version', '1.1.0')
       on host, 'mkdir -p /etc/puppet/modules'

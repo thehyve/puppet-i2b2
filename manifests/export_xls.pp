@@ -6,8 +6,12 @@ class i2b2::export_xls inherits i2b2::params
   $export_xls_zip = "$export_xls_dir.zip"
   $webclient_dir = $i2b2::webclient::webclient_dir
 
-  $sed_add_jquery = 'sed -i \'0,/<script/ s#<script#<script type="text/javascript" src="js-ext/jquery-1.6.1.min.js"></script>\n<script>\n\tvar $j = jQuery.noConflict();\n</script>\n<script#\' '
-  $sed_add_cell = 'sed -i \'0,/i2b2.hive.tempCellsList/ s#i2b2.hive.tempCellsList = \[#i2b2.hive.tempCellsList = \[\n{ code: "ExportXLS",\nforceLoading: true,\nforceConfigMsg: { params: [] },\nforceDir: "cells/plugins/standard"\n},#\' '
+  $sed_add_jquery = "sed -i '0,/<script/ s#<script#<script type=\"text/javascript\" \
+src=\"js-ext/jquery-1.6.1.min.js\"></script>\\n<script>\\n\\tvar \
+\$j = jQuery.noConflict();\\n</script>\\n<script#' "
+  $sed_add_cell = "sed -i '0,/i2b2.hive.tempCellsList/ s#i2b2.hive.tempCellsList = \\[#i2b2.hive.tempCellsList = \
+\\[\\n{ code: \"ExportXLS\",\\nforceLoading: true,\\nforceConfigMsg: { params: [] },\\n\
+forceDir: \"cells/plugins/standard\"\\n},#'"
 
   Exec {
     path => '/bin:/usr/bin',
@@ -38,15 +42,14 @@ class i2b2::export_xls inherits i2b2::params
     command     => "cp -r '$export_xls_dir/webclient/' '$webclient_dir/..'",
     refreshonly => true,
   }
-  ~>
+
   exec { 'insert-script-tag-jQuery' :
-    command     => "$sed_add_jquery $webclient_dir/default.htm",
-    refreshonly => true,
+    command => "$sed_add_jquery '$webclient_dir/default.htm'",
+    unless  => "grep js-ext/jquery-1.6.1 '$webclient_dir/default.htm'",
   }
-  ~>
   exec { 'insert-cell-list' :
-    command     => "$sed_add_cell $webclient_dir/js-i2b2/i2b2_loader.js",
-    refreshonly => true,
+    command => "$sed_add_cell '$webclient_dir/js-i2b2/i2b2_loader.js'",
+    unless  => "grep ExportXLS '$webclient_dir/js-i2b2/i2b2_loader.js'",
   }
 
   file { $export_xls_zip:

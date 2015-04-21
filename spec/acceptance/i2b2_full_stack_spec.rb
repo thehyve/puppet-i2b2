@@ -6,10 +6,6 @@ describe 'i2b2 full stack with postgresql/apache' do
       include i2b2::profile::postgresql::i2b2_params
       include i2b2::profile::tomcat::i2b2_params
       $merged_params = merge(
-          {
-            service_user_password  => 'barfoo',
-            default_admin_password => 'foobar',
-          },
           $i2b2::profile::tomcat::i2b2_params::data,
           $i2b2::profile::postgresql::i2b2_params::data)
 
@@ -35,7 +31,7 @@ describe 'i2b2 full stack with postgresql/apache' do
 <i2b2:request xmlns:i2b2="http://www.i2b2.org/xsd/hive/msg/1.1/" xmlns:pm="http://www.i2b2.org/xsd/cell/pm/1.1/">
     <message_header>
         <proxy>
-            <redirect_url>http://am1.thehyve.net:8080/i2b2/services/PMService/getServices</redirect_url>
+            <redirect_url>http://#{fact('fqdn')}:8080/i2b2/services/PMService/getServices</redirect_url>
         </proxy>
 
         <i2b2_version_compatible>1.1</i2b2_version_compatible>
@@ -87,8 +83,8 @@ describe 'i2b2 full stack with postgresql/apache' do
   it 'logs in to the webclient' do
     body_path = '/tmp/i2b2_request.xml'
     create_remote_file default, body_path, request
-    curl(['http://localhost/webclient/index.php',
-         '-H', "'Content-type: text/xml; charset=UTF-8'",
+    curl(['https://localhost/webclient/index.php',
+         '-kH', "'Content-type: text/xml; charset=UTF-8'",
          '--data-binary', "@/#{body_path}"]) do |r|
       result = r.stdout
       expect(result).to match(/<cell_data id="WORK">/)

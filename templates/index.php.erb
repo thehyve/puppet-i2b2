@@ -1,0 +1,132 @@
+<?php
+
+define('READ_CHUNK_SIZE', 4096);
+define('INITIAL_READ_LIMIT', 40960);
+define('CONNECT_TIMEOUT', 10);
+define('FULL_TIMEOUT', 2000);
+
+$prefix_whitelist = [
+<% @proxy_prefixes.each do |p| -%>
+   '<%= p.gsub(/[\\']/, '\\\\\0') %>',
+<% end -%>
+];
+
+if ($_SERVER['REQUEST_METHOD'] == 'GET' ||
+            $_SERVER['REQUEST_METHOD'] == 'HEAD') {
+    $new_url = empty($_SERVER['HTTPS']) ? 'http://' : 'https://';
+    $new_url .= empty($_SERVER['HTTP_HOST']) ?
+            $_SERVER['SERVER_NAME'] : $_SERVER['HTTP_HOST'];
+    if (!((empty($_SERVER['HTTPS']) && $_SERVER['SERVER_PORT'] == 80) ||
+            (!empty($_SERVER['HTTPS']) && $_SERVER['SERVER_PORT'] == 443))) {
+        $new_url .= ":$_SERVER[SERVER_PORT]";
+    }
+
+    $path = $_SERVER['REQUEST_URI'];
+    $path = preg_replace('/\\?.*$/', '', $path);
+    $path = preg_replace('@/[^/]+$@', '/', $path);
+    $path .= 'default.htm';
+
+    $new_url .= $path;
+
+    header("$_SERVER[SERVER_PROTOCOL] 303");
+    header("Location: $new_url");
+    error_log("Redirecting to $new_url");
+    die;
+}
+
+if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+    header("$_SERVER[SERVER_PROTOCOL] 405");
+    header('Allow: GET, HEAD, POST');
+    die;
+}
+
+// method is POST
+
+function err($message, $code) {
+    error_log("Erroring request with code $code: $message");
+    header("$_SERVER[SERVER_PROTOCOL] $code");
+    header("Content-type: text/plain");
+    echo $message, "\n";
+    die;
+}
+
+$in = fopen('php://input', 'rb');
+
+$initial_buffer = '';
+while (!feof($in)) {
+    $initial_buffer .= fread($in, READ_CHUNK_SIZE);
+    if (preg_match('@<redirect_url>([^<]+)</redirect_url>@',
+            $initial_buffer, $matches)) {
+        $redirect_url = trim($matches[1]);
+        break;
+    }
+
+    if (strlen($initial_buffer) >= INITIAL_READ_LIMIT) {
+        err("Could not find <redirect_url> after reading " .
+                strlen($initial_buffer) . ' characters', 400);
+    }
+}
+
+if (!isset($redirect_url)) {
+    err('Could not find <redirect_url>', 400);
+}
+
+$allowed = false;
+foreach ($prefix_whitelist as $prefix) {
+    if (substr($redirect_url, 0, strlen($prefix)) === $prefix) {
+        $allowed = true;
+        break;
+    }
+}
+
+if (!$allowed) {
+    err("Will not relay to $redirect_url", 403);
+}
+
+function read_function($c, $in, $limit) {
+    global $initial_buffer;
+    static $initial_buffer_pos = 0;
+
+    if ($initial_buffer_pos >= strlen($initial_buffer)) {
+        return fread($in, $limit);
+    } else {
+        $n = min($limit, strlen($initial_buffer) - $initial_buffer_pos);
+        $read = substr($initial_buffer, $initial_buffer_pos, $n);
+        $initial_buffer_pos += $n;
+        return $read;
+    }
+}
+
+function write_function($c, $data) {
+    static $committed = false;
+
+    if (!$committed) {
+        header('Content-type: text/xml');
+        $committed = true;
+    }
+
+    echo $data;
+    return strlen($data);
+}
+
+$c = curl_init($redirect_url);
+$headers = [
+    'Expect:',
+    'Transfer-Encoding: chunked', // could use requests' content-length if avail
+    'Content-type: text/xml',
+    'Accept: text/xml'];
+curl_setopt($c, CURLOPT_POST, true);
+curl_setopt($c, CURLOPT_HTTPHEADER, $headers);
+curl_setopt($c, CURLOPT_CONNECTTIMEOUT, CONNECT_TIMEOUT);
+curl_setopt($c, CURLOPT_TIMEOUT, FULL_TIMEOUT);
+curl_setopt($c, CURLOPT_FAILONERROR, true);
+@curl_setopt($c, CURLOPT_INFILE, $in);
+curl_setopt($c, CURLOPT_READFUNCTION, 'read_function');
+curl_setopt($c, CURLOPT_WRITEFUNCTION, 'write_function');
+
+curl_exec($c);
+if (curl_errno($c)) {
+    err('Request failed: ' . curl_error($c), 500);
+}
+
+// vim: set et ts=4:

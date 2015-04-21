@@ -10,9 +10,9 @@
 			domain:        "<%= domain['domain'] %>",
 			name:          "<%= domain['name'] %>",
 			urlCellPM:     "<%= domain['urlCellPM'] %>",
-			allowAnalysis: <%= domain['allowAnalysis'] %>,
-			adminOnly:     true,
-			debug:         <%= domain['debug'] %>
+			allowAnalysis: "<%= domain['allowAnalysis'] %>",
+			adminOnly:     <%= @admin_only %>,
+			debug:         "<%= domain['debug'] %>"
 		},
 		<% end -%>
 	]

@@ -11,10 +11,12 @@ class i2b2::params(
   $webroot_dir = '/opt/i2b2_webroot',
   $axis_version = '1.6.2',
   $exploded_war_dir = '/opt/i2b2',
+  $axis_admin_password,
 
   $context = 'i2b2',
   $local_base_url = 'http://localhost:8080',
-  $external_base_url = "http://${::fqdn}:8080",
+  $external_hostname = $::fqdn, # right now for the webserver vhost only (webclient)
+  $external_base_url_tomcat = "http://${::fqdn}:8080",
 
   # connection details for the database; does not have to be local
   $database_type, # e.g. postgresql
@@ -67,9 +69,12 @@ class i2b2::params(
 
   # specified like this [ { local => true, filename => 'test_local' }, { local =>false, filename => 'http://testremote.com/remote.css' } ]
   $additional_css_sheets = [],
+
+  $admin_proxy_prefixes = '',     # array, '' for default
+  $webclient_proxy_prefixes = '', # array, '' for default
 ) {
   $local_url = "$local_base_url/$context"
-  $external_url = "$external_base_url/$context"
+  $external_url = "$external_base_url_tomcat/$context"
 
   $default_domains =
   [
@@ -89,8 +94,10 @@ class i2b2::params(
     },
   ]
   $webclient_domains = hiera('i2b2::params::webclient_domains', $default_domains)
-  
+  $webclient_dir = "$webroot_dir/webclient"
+
   $admin_domains = hiera('i2b2::params::admin_domains', $default_domains)
+  $admin_dir = "$webroot_dir/admin"
 
   if $manage_packages {
     if $::osfamily == 'debian' {
@@ -98,6 +105,8 @@ class i2b2::params(
       $java_package = 'openjdk-7-jdk'
       $ant_package = 'ant'
       $gems_deps_packages = ['libpq-dev', 'ruby-dev']
+      $php_curl_package = 'php5-curl'
+      $ssl_key_group = 'ssl-cert'
     }
   }
 }
