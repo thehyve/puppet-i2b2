@@ -35,9 +35,9 @@ RSpec.configure do |c|
 
       # TODO: checkout our private modules repository instead
       on host, puppet('module', 'install', 'puppetlabs-stdlib', '--version', '4.2.1')
-      on host, puppet('module', 'install', 'puppetlabs-postgresql', '--version', '4.0.0')
+      on host, puppet('module', 'install', 'puppetlabs-postgresql', '--version', '4.3.0')
       on host, puppet('module', 'install', '--force', 'puppetlabs-concat', '--version', '1.1.0-rc1')
-      on host, puppet('module', 'install', 'puppetlabs-apache', '--version', '1.1.1')
+      on host, puppet('module', 'install', 'puppetlabs-apache', '--version', '1.4.0')
       on host, puppet('module', 'install', 'b4ldr-logrotate', '--version', '1.1.2')
       on host, puppet('module', 'install', 'maestrodev-wget', '--version', '1.1.0')
       on host, 'mkdir -p /etc/puppet/modules'

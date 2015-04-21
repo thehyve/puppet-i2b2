@@ -12,7 +12,7 @@ class i2b2::profile::apache(
 
   include ::apache::mod::php
 
-  package { $php_curl_package: }
+  package { $i2b2::params::php_curl_package: }
 
   apache::vhost { "http-$servername":
     port          => 80,
@@ -40,11 +40,21 @@ class i2b2::profile::apache(
 
     file { $key_file:
       source  => $ssl_key_source,
-      mode    => '440',
+      mode    => '0440',
       owner   => 'root',
       group   => $i2b2::params::ssl_key_group,
       require => Class['::apache']
     } ~> Class['::apache::service']
+  }
+
+  $ssl_ca_value = $ssl_cert_source ? {
+    ''      => undef,
+    default => $cert_file
+  }
+  $ssl_cert_value = $ssl_ca_value
+  $ssl_key_value = $ssl_cert_source ? {
+    ''      => undef,
+    default => $key_file,
   }
 
   apache::vhost { "https-$servername":
@@ -53,18 +63,9 @@ class i2b2::profile::apache(
     docroot    => $webroot_dir,
     ssl        => true,
     headers    => 'set Strict-Transport-Security "max-age=15768000"',
-    ssl_ca     => $ssl_cert_source ? {
-      ''      => undef,
-      default => $cert_file
-    },
-    ssl_cert   => $ssl_cert_source ? {
-      ''      => undef,
-      default => $cert_file
-    },
-    ssl_key    => $ssl_cert_source ? {
-      ''      => undef,
-      default => $key_file,
-    }
+    ssl_ca     => $ssl_ca_value,
+    ssl_cert   => $ssl_cert_value,
+    ssl_key    => $ssl_ca_value,
   }
 
   include ::i2b2::webclient
