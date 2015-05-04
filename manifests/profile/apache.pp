@@ -65,7 +65,7 @@ class i2b2::profile::apache(
     headers    => 'set Strict-Transport-Security "max-age=15768000"',
     ssl_ca     => $ssl_ca_value,
     ssl_cert   => $ssl_cert_value,
-    ssl_key    => $ssl_ca_value,
+    ssl_key    => $ssl_key_value,
   }
 
   include ::i2b2::webclient
