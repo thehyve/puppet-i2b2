@@ -79,13 +79,6 @@ class i2b2::params(
   $default_domains =
   [
     {
-      domain => 'i2b2demo',
-      name => 'HarvardDemo',
-      urlCellPM => 'http://services.i2b2.org/i2b2/services/PMService/',
-      allowAnalysis => true,
-      debug => true,
-    },
-    {
       domain        => $hive_domain_name,
       name          => "Hive $hive_domain_name",
       urlCellPM     => "$external_url/services/PMService/",
