@@ -15,6 +15,7 @@ class i2b2::profile::apache(
   package { $i2b2::params::php_curl_package: }
 
   apache::vhost { "http-$servername":
+    servername    => $servername,
     port          => 80,
     docroot       => $webroot_dir,
     redirect_dest => "https://$servername/",
