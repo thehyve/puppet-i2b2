@@ -25,7 +25,7 @@ class i2b2::cells::im inherits i2b2::params {
     cell_details       => {
       name   => 'IM Cell',
       url    => "$params::external_url/services/IMService/",
-      method => REST,
+      method => 'REST',
     }
   }
 

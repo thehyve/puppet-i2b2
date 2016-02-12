@@ -30,7 +30,7 @@ class i2b2::cells::ontology inherits i2b2::params {
     cell_details       => {
       name   => 'Ontology Cell',
       url    => "$params::external_url/services/OntologyService/",
-      method => REST,
+      method => 'REST',
     }
   }
 

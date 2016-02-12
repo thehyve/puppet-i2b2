@@ -52,7 +52,7 @@ define i2b2::container_data_source(
       "$name" => {
         jdbc_driver   => $jdbc_driver,
         jdbc_url      => $jdbc_url,
-        type          => $type,
+        'type'        => $type,
         username      => $user,
         password      => $password,
         max_conn      => $max_conn,

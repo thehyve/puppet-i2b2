@@ -43,7 +43,7 @@ class i2b2::cells::crc inherits i2b2::params {
     cell_details       => {
       name   => 'Data Repository',
       url    => "$params::external_url/services/QueryToolService/",
-      method => REST,
+      method => 'REST',
     }
   }
 }

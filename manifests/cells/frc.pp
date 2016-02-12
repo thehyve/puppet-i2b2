@@ -22,7 +22,7 @@ class i2b2::cells::frc inherits i2b2::params {
     cell_details      => {
       name   => 'File Repository',
       url    => "$params::external_url/services/FRService/",
-      method => SOAP,
+      method => 'SOAP',
     }
   }
 

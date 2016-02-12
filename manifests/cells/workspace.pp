@@ -25,7 +25,7 @@ class i2b2::cells::workspace inherits i2b2::params {
     cell_details       => {
       name   => 'Workplace Cell',
       url    => "$params::external_url/services/WorkplaceService/",
-      method => REST,
+      method => 'REST',
     }
   }
 
