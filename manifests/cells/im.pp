@@ -6,25 +6,25 @@ class i2b2::cells::im inherits i2b2::params {
 
   modified_properties_file { "$src_dir/etc/spring/im.properties":
     values => {
-      'im.bootstrapdb.imschema' => $params::hive_db_user,
-      'im.ws.pm.url'            => "$params::local_url/services/PMService/getServices",
+      'im.bootstrapdb.imschema' => $::i2b2::params::hive_db_user,
+      'im.ws.pm.url'            => "$::i2b2::params::local_url/services/PMService/getServices",
     },
   }
   ~>
   i2b2::cells::common { 'im':
     cell_source_dir    => $src_dir,
-    user               => $params::user,
+    user               => $::i2b2::params::user,
     file_to_check      => 'IM-core.jar',
-    pm_cell_user       => $params::pm_db_user,
+    pm_cell_user       => $::i2b2::params::pm_db_user,
     bootstrap_prefix   => 'IM',
-    bootstrap_user     => $params::hive_db_user,
-    bootstrap_password => $params::hive_db_password,
+    bootstrap_user     => $::i2b2::params::hive_db_user,
+    bootstrap_password => $::i2b2::params::hive_db_password,
     app_dir_prop_file  => "$src_dir/etc/spring/im_application_directory.properties",
     app_dir_key        => 'edu.harvard.i2b2.im.applicationdir',
     cell_id            => 'IM',
     cell_details       => {
       name   => 'IM Cell',
-      url    => "$params::external_url/services/IMService/",
+      url    => "$::i2b2::params::external_url/services/IMService/",
       method => 'REST',
     }
   }

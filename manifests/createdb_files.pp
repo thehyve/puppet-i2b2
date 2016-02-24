@@ -1,9 +1,9 @@
 class i2b2::createdb_files inherits i2b2::params {
   require i2b2
 
-  $createdb_zip = "$params::intermediate_dir/i2b2createdb-$params::version.zip"
+  $createdb_zip = "$::i2b2::params::intermediate_dir/i2b2createdb-$::i2b2::params::version.zip"
 
-  $dir = "$intermediate_dir/i2b2createdb-$params::version"
+  $dir = "$intermediate_dir/i2b2createdb-$::i2b2::params::version"
   $base = "$dir/NewInstall"
 
   Exec {
@@ -14,9 +14,9 @@ class i2b2::createdb_files inherits i2b2::params {
     ensure => directory,
   } ->
   wget::fetch { $createdb_zip:
-    source      => "http://files.thehyve.net/i2b2-$params::version/i2b2createdb-$params::version.zip",
+    source      => "http://files.thehyve.net/i2b2-$::i2b2::params::version/i2b2createdb-$::i2b2::params::version.zip",
     destination => $createdb_zip,
-    require     => File[$params::intermediate_dir],
+    require     => File[$::i2b2::params::intermediate_dir],
   } ~>
   exec { "clean-$dir":
     cwd         => $dir,

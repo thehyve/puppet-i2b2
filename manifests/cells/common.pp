@@ -75,13 +75,13 @@ define i2b2::cells::common(
     validate_string($cell_details['url'])
     validate_string($cell_details['method'])
 
-    if $params::export_cell_registrations_tag != '' {
+    if $::i2b2::params::export_cell_registrations_tag != '' {
       @@i2b2::cell_data::pm_cell_registration { $name:
         url       => $cell_details[url],
         cell_name => $cell_details[name],
         cell_id   => $cell_id,
         method    => $cell_details[method],
-        tag       => $params::export_cell_registrations_tag
+        tag       => $::i2b2::params::export_cell_registrations_tag
       }
     } else {
       i2b2::cell_data::pm_cell_registration { $name:

@@ -6,17 +6,17 @@ class i2b2::cells::pm inherits i2b2::params {
 
   i2b2::cells::common { 'pm':
     cell_source_dir    => $src_dir,
-    user               => $params::user,
+    user               => $::i2b2::params::user,
     file_to_check      => 'ProjectManagement-core.jar',
     bootstrap_prefix   => 'PM',
-    bootstrap_user     => $params::pm_db_user,
-    bootstrap_password => $params::pm_db_password,
+    bootstrap_user     => $::i2b2::params::pm_db_user,
+    bootstrap_password => $::i2b2::params::pm_db_password,
     ant_build_xml      => 'build.xml',
     targets            => ['clean', 'dist', 'deploy']
   }
 
   # default data includes user AGG_SERVICE_ACCOUNT, so we may need to remove it
-  if $params::service_user != 'AGG_SERVICE_ACCOUNT' {
+  if $::i2b2::params::service_user != 'AGG_SERVICE_ACCOUNT' {
     i2b2::i2b2_user { 'AGG_SERVICE_ACCOUNT':
       ensure => absent,
     }

@@ -15,9 +15,9 @@ class i2b2::profile::tomcat(
     path => $context_file_path,
   } ->
   tomcat_distr::webapp { 'i2b2':
-    username        => $params::user,
+    username        => $::i2b2::params::user,
     webapp_base     => '/home',
-    context         => $params::context,
+    context         => $::i2b2::params::context,
     number          => $number,
     java_opts       => '-Djava.awt.headless=true -Xmx1300M',
     source          => $context_file_path,

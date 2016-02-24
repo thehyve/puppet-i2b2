@@ -21,7 +21,7 @@ define i2b2::project(
 
   table_row { "project $name project_data":
     ensure   => $ensure,
-    table    => "$params::pm_db_user.pm_project_data",
+    table    => "$::i2b2::params::pm_db_user.pm_project_data",
     identity => {
       'project_id' => $name
     },
@@ -47,7 +47,7 @@ define i2b2::project(
     default  => [],
   }
 
-  i2b2_user_roles { "${params::service_user}:$name":
+  i2b2_user_roles { "${::i2b2::params::service_user}:$name":
     skip_project_dep => true,
     roles            => $service_user_roles,
   }
@@ -69,8 +69,8 @@ define i2b2::project(
     roles            => $admin_user_roles,
   }
 
-  $spec = i2b2_project_massage_lookup($name, $params::hive_domain_name, # not id!
-    $params::hive_db_user, $params::database_type, $cell_schemas)
+  $spec = i2b2_project_massage_lookup($name, $::i2b2::params::hive_domain_name, # not id!
+    $::i2b2::params::hive_db_user, $::i2b2::params::database_type, $cell_schemas)
 
   create_resources('table_row', $spec, { ensure => $ensure })
 }

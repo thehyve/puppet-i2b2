@@ -1,8 +1,8 @@
 class i2b2::profile::tomcat::context_file(
   $path
 ) inherits i2b2::params {
-  $doc_base = $params::exploded_war_dir
-  $context  = $params::context
+  $doc_base = $::i2b2::params::exploded_war_dir
+  $context  = $::i2b2::params::context
 
   $resources_fragments = "$i2b2::params::intermediate_dir/tomcat_resources.xml.fragments"
 

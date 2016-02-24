@@ -9,7 +9,7 @@ define i2b2::cell_schemas::crc(
     database_password  => $db_password,
     target_infix       => 'crcdata',
     additional_targets => [
-      "create_procedures_release_$params::ant_target_version",
+      "create_procedures_release_$::i2b2::params::ant_target_version",
       $demo_data ? {
           true    => 'db_demodata_load_data',
           default => [],

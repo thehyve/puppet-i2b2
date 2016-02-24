@@ -1,10 +1,10 @@
 class i2b2::i2b2src_files inherits i2b2::params {
   require i2b2
 
-  $url = "http://files.thehyve.net/i2b2-$params::version/i2b2core-src-$params::version.zip"
-  $i2b2source_zip = "$params::intermediate_dir/i2b2core-src-$params::version.zip"
+  $url = "http://files.thehyve.net/i2b2-$::i2b2::params::version/i2b2core-src-$::i2b2::params::version.zip"
+  $i2b2source_zip = "$::i2b2::params::intermediate_dir/i2b2core-src-$::i2b2::params::version.zip"
 
-  $dir = "$params::intermediate_dir/i2b2core-src-$params::version"
+  $dir = "$::i2b2::params::intermediate_dir/i2b2core-src-$::i2b2::params::version"
 
   Exec {
     path => '/bin:/usr/bin'
@@ -12,12 +12,12 @@ class i2b2::i2b2src_files inherits i2b2::params {
 
   file { $dir:
     ensure => directory,
-    owner  => $params::user,
+    owner  => $::i2b2::params::user,
   } ->
   wget::fetch { $i2b2source_zip:
     source      => $url,
     destination => $i2b2source_zip,
-    require     => File[$params::intermediate_dir],
+    require     => File[$::i2b2::params::intermediate_dir],
   } ~>
   exec { "clean-$dir":
     cwd         => $dir,
@@ -27,7 +27,7 @@ class i2b2::i2b2src_files inherits i2b2::params {
   } ->
   exec { "extract-$i2b2source_zip":
     cwd     => $dir,
-    user    => $params::user,
+    user    => $::i2b2::params::user,
     command => "bsdtar -xf '$i2b2source_zip'",
     creates => "$dir/edu.harvard.i2b2.server-common"
   }
@@ -36,7 +36,7 @@ class i2b2::i2b2src_files inherits i2b2::params {
     require => Wget::Fetch[$i2b2source_zip],
   }
 
-  $diff_file = "$params::intermediate_dir/ServiceLocator.java.diff"
+  $diff_file = "$::i2b2::params::intermediate_dir/ServiceLocator.java.diff"
   file { $diff_file:
     source => 'puppet:///modules/i2b2/ServiceLocator.java.diff',
   }
@@ -44,7 +44,7 @@ class i2b2::i2b2src_files inherits i2b2::params {
   $serviceLocator_file = "$dir/edu.harvard.i2b2.server-common/src/core/edu/harvard/i2b2/common/util/ServiceLocator.java"
   exec { "patch-$serviceLocator_file":
     cwd      => $dir,
-    user     => $params::user,
+    user     => $::i2b2::params::user,
     command  => "patch -p2 < '$diff_file'",
     unless   => "grep nameInCompEnv '$serviceLocator_file'",
     provider => shell,

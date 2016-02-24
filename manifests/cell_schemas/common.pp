@@ -15,7 +15,7 @@ define i2b2::cell_schemas::common(
     content => template('i2b2/db.properties.erb')
   }
 
-  $ant_target_version = $params::ant_target_version
+  $ant_target_version = $::i2b2::params::ant_target_version
 
   $db_properties_final = "${::i2b2::createdb_files::base}/$ant_script_dir/db.properties"
 
@@ -28,7 +28,7 @@ define i2b2::cell_schemas::common(
   exec { "run ant for creating schema for user $database_user":
     command     => "cp '$db_properties' '$db_properties_final' && \
                     ant -f '${::i2b2::createdb_files::base}/$ant_script_dir/data_build.xml' \
-                    create_${target_infix}_tables_release_${params::ant_target_version} $joined_additional_targets",
+                    create_${target_infix}_tables_release_${::i2b2::params::ant_target_version} $joined_additional_targets",
     path        => '/bin:/usr/bin',
     refreshonly => true, # refreshed by database_cell_detect_implementation
     require     => File[$db_properties],

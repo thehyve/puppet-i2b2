@@ -12,7 +12,7 @@ define i2b2::i2b2_user(
 
   table_row { "i2b2 user $username":
     ensure   => $ensure,
-    table    => "$params::pm_db_user.pm_user_data",
+    table    => "$::i2b2::params::pm_db_user.pm_user_data",
     identity => {
       user_id => $username,
     },

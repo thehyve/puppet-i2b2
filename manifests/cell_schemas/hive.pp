@@ -1,6 +1,6 @@
 class i2b2::cell_schemas::hive(
-  $db_user     = $params::hive_db_user,
-  $db_password = $params::hive_db_password,
+  $db_user     = $::i2b2::params::hive_db_user,
+  $db_password = $::i2b2::params::hive_db_password,
 ) inherits i2b2::params {
 
   # there can only be one hive cell database

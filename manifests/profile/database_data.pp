@@ -45,7 +45,7 @@ class i2b2::profile::database_data(
   if $default_project {
     i2b2::project { 'default':
       project_name => 'Default',
-      domain       => $params::hive_domain_name,
+      domain       => $::i2b2::params::hive_domain_name,
       cell_schemas => {
         'ontology'  => $ontology_db_user,
         'crc'       => $crc_db_user,
