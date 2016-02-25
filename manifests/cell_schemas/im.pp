@@ -8,7 +8,7 @@ define i2b2::cell_schemas::im(
     default => [],
   }
 
-  common { "im-$name":
+  i2b2::cell_schemas::common { "im-$name":
     ant_script_dir     => 'Imdata',
     database_user      => $db_user,
     database_password  => $db_password,

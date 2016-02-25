@@ -8,7 +8,7 @@ define i2b2::cell_schemas::ontology(
     default => [],
   }
 
-  common { "ontology-$name":
+  i2b2::cell_schemas::common { "ontology-$name":
     ant_script_dir     => 'Metadata',
     database_user      => $db_user,
     database_password  => $db_password,

@@ -8,7 +8,7 @@ define i2b2::cell_schemas::workspace(
     default => [],
   }
 
-  common { "workspace-$name":
+  i2b2::cell_schemas::common { "workspace-$name":
     ant_script_dir     => 'Workdata',
     database_user      => $db_user,
     database_password  => $db_password,

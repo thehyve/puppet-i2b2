@@ -3,7 +3,7 @@ define i2b2::cell_schemas::crc(
   $db_password,
   $demo_data = false
 ) {
-  common { "crc-$name":
+  i2b2::cell_schemas::common { "crc-$name":
     ant_script_dir     => 'Crcdata',
     database_user      => $db_user,
     database_password  => $db_password,
