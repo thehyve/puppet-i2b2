@@ -10,8 +10,14 @@ class i2b2::packages(
   ensure_resource('package', $java_package)
   ensure_resource('package', $gems_deps_packages)
 
+  # Puppet 4 has a bundled copy of ruby
+  $gem_provider = (versioncmp($::puppetversion, '4') < 0) ? {
+    true    => 'gem',
+    default => 'puppet_gem',
+  }
+
   package { ['java-properties', 'pg']:
-    provider =>  gem,
+    provider => $gem_provider,
     require  => Package[$gems_deps_packages],
   }
 }

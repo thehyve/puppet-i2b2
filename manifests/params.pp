@@ -97,7 +97,14 @@ class i2b2::params(
       $bsdtar_package = 'bsdtar'
       $java_package = 'openjdk-7-jdk'
       $ant_package = 'ant'
-      $gems_deps_packages = ['libpq-dev', 'ruby-dev']
+      if versioncmp($::puppetversion, '4') < 0 {
+        $gems_deps_packages = ['libpq-dev', 'ruby-dev']
+      } else {
+        # Puppet 4 has private OpenSSL copy, which is is incompatible with
+        # distro's libpq.  libpq needs to be compiled against that private
+        # copy or without OpenSSL support
+        $gems_deps_packages = []
+      }
       $php_curl_package = 'php5-curl'
       $ssl_key_group = 'ssl-cert'
     }
