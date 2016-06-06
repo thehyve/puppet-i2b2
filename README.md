@@ -7,6 +7,8 @@ puppet-i2b2
 Module for installing i2b2, including the server part, the webclient and the
 admin interface.
 
+Requires Puppet 4, or at least the future parser to be enabled.
+
 System tests
 ------------
 
