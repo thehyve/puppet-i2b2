@@ -6,12 +6,12 @@ class i2b2::cells::ontology inherits i2b2::params {
 
   modified_properties_file { "$src_dir/etc/spring/ontology.properties":
     values => {
-      'ontology.bootstrapdb.metadataschema'              => $::i2b2::params::hive_db_user,
-      'ontology.ws.pm.url'                               => "$::i2b2::params::local_url/services/PMService/getServices",
-      'edu.harvard.i2b2.ontology.ws.fr.url'              => "$::i2b2::params::local_url/services/FRService",
-      'edu.harvard.i2b2.ontology.ws.crc.url'             => "$::i2b2::params::local_url/services/QueryToolService",
-      'edu.harvard.i2b2.ontology.pm.serviceaccount.user' => $::i2b2::params::service_user,
-      'edu.harvard.i2b2.ontology.pm.serviceaccount.user' => $::i2b2::params::service_user_password,
+      'ontology.bootstrapdb.metadataschema'                  => $::i2b2::params::hive_db_user,
+      'ontology.ws.pm.url'                                   => "$::i2b2::params::local_url/services/PMService/getServices",
+      'edu.harvard.i2b2.ontology.ws.fr.url'                  => "$::i2b2::params::local_url/services/FRService",
+      'edu.harvard.i2b2.ontology.ws.crc.url'                 => "$::i2b2::params::local_url/services/QueryToolService",
+      'edu.harvard.i2b2.ontology.pm.serviceaccount.user'     => $::i2b2::params::service_user,
+      'edu.harvard.i2b2.ontology.pm.serviceaccount.password' => $::i2b2::params::service_user_password,
     },
     notify => I2b2::Cells::Common['ontology']
   }
