@@ -162,14 +162,13 @@ GEM
       hiera (>= 2.0, < 4)
       json_pure
     puppet-lint (1.1.0)
-    puppet-syntax (1.4.0)
+    puppet-syntax (2.1.0)
       rake
-    puppetlabs_spec_helper (0.8.2)
+    puppetlabs_spec_helper (1.1.1)
       mocha
       puppet-lint
       puppet-syntax
       rake
-      rspec
       rspec-puppet
     rake (10.4.2)
     rbvmomi (1.8.2)
@@ -188,7 +187,7 @@ GEM
       rspec-core (>= 2.99.0.beta1)
       rspec-expectations (>= 2.99.0.beta1)
     rspec-mocks (2.99.2)
-    rspec-puppet (1.0.1)
+    rspec-puppet (2.4.0)
       rspec
     serverspec (1.16.0)
       highline
@@ -218,12 +217,12 @@ DEPENDENCIES
   beaker-rspec
   java-properties (~> 0.0.2)
   pg (~> 0.17.1)
-  puppet (>= 4)
+  puppet (~> 4.5.1)
   puppet-lint (~> 1.1.0)
-  puppetlabs_spec_helper (~> 0.8.2)
+  puppetlabs_spec_helper (~> 1.1.1)
   rake (~> 10.4.2)
   rspec (< 3.0.0)
-  rspec-puppet (~> 1.0.1)
+  rspec-puppet (~> 2.4.0)
   serverspec
 
 BUNDLED WITH

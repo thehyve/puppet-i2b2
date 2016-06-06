@@ -1,10 +1,10 @@
-source ENV['GEM_SOURCE'] || "https://rubygems.org"
+
 
 group :development, :test do
   gem 'rake',                   '~> 10.4.2', :require => false
-  gem 'puppetlabs_spec_helper', '~> 0.8.2',  :require => false
+  gem 'puppetlabs_spec_helper', '~> 1.1.1',  :require => false
   gem 'rspec',                  '< 3.0.0',   :require => false
-  gem 'rspec-puppet',           '~> 1.0.1',  :require => false
+  gem 'rspec-puppet',           '~> 2.4.0',  :require => false
   gem 'puppet-lint',            '~> 1.1.0',  :require => false
 end
 
@@ -16,7 +16,7 @@ end
 if puppetversion = ENV['PUPPET_GEM_VERSION']
   gem 'puppet', puppetversion, :require => false
 else
-  gem 'puppet', '>= 4', :require => false
+  gem 'puppet', '~> 4.5.1', :require => false
 end
 
 gem 'java-properties', '~> 0.0.2',  :require => false
