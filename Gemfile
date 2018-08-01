@@ -1,4 +1,4 @@
-
+source 'https://rubygems.org'
 
 group :development, :test do
   gem 'rake',                   '~> 10.4.2', :require => false
@@ -20,6 +20,6 @@ else
 end
 
 gem 'java-properties', '~> 0.0.2',  :require => false
-gem 'pg',              '~> 0.17.1', :require => false
+gem 'pg',              '~> 1.0.0', :require => false
 
 # vim:ft=ruby et ts=2
