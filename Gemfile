@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 group :development, :test do
-  gem 'rake',                   '~> 10.4.2', :require => false
+  gem 'rake',                   '~> 12.3.3', :require => false
   gem 'puppetlabs_spec_helper', '~> 1.1.1',  :require => false
   gem 'rspec',                  '< 3.0.0',   :require => false
   gem 'rspec-puppet',           '~> 2.4.0',  :require => false
